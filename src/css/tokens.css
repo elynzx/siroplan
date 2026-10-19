@@ -1,0 +1,12 @@
+:root {
+  --color-primary: #fde2ec;
+  --color-secondary: #7a7a7a;
+  --color-bg: #f0f0f0;
+
+  --radius-xl: 24px;
+  --radius-md: 16px;
+
+  --shadow-cozy: 0px 6px 15px rgba(165, 160, 160, 0.3);
+
+  --transition-fast: all 0.2s ease;
+}
