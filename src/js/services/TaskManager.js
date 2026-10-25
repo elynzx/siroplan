@@ -68,13 +68,13 @@ export class TaskManager {
     const task = this.taskList.find((task) => task.id === parseInt(taskId));
 
     if (task) {
-      task.title = newTitle;
-      task.description = newDescription;
-      task.project = newProject;
-      task.assignee = newAssignee;
-      task.deadline = newDeadline;
-      task.priority = newPriority;
-      task.status = newStatus;
+      task.title = newTitle || task.title;
+      task.description = newDescription || task.description;
+      task.project = newProject || task.project;
+      task.assignee = newAssignee || task.assignee;
+      task.deadline = newDeadline || task.deadline;
+      task.priority = newPriority || task.priority;
+      task.status = newStatus || task.status;
     }
   }
 }
