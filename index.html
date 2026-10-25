@@ -11,48 +11,219 @@
         content="Organiza tus estudios de forma fácil y sin estrés. Siro Plan es un planificador de tareas semanal con temporizador Pomodoro integrado.">
     <link rel="icon" type="image/x-icon" href="./src/assets/favicon.ico">
 
-    <link rel="preconnect" href="https://googleapis.com">
-    <link rel="preconnect" href="https://gstatic.com" crossorigin>
-    <link href="https://googleapis.com/css2?family=Karla:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400..800&family=Karla:ital,wght@0,200..800;1,200..800&family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap"
+        rel="stylesheet">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 
     <link href="./src/css/styles.css" rel="stylesheet">
+
+    <script type="module" src="./src/js/main.js"></script>
 </head>
 
-<body>
+<body class="app-layout">
 
-    <div class="app-layout">
 
-        <aside class="sidebar-aside">
+    <aside class="sidebar-aside">
 
-            <header class="sidebar-header">
-                <div class="logo-cat-icon">
-                    <span></span>
+        <header class="sidebar-header">
+            <div class="logo-cat-icon">
+                <span></span>
+            </div>
+            <div class="logo-text">
+                <h2 class="title">Welcome</h2>
+                <span class="logo-subtitle">Make time feel lighter</span>
+            </div>
+        </header>
+
+        <section class="calendar-widget">
+        </section>
+
+        <section class="pomodoro-widget">
+        </section>
+
+        <footer class="sidebar-footer">
+            <span class="footer-icon"></span>
+            <p class="footer-text">One little task at a time.</p>
+            <p> You're doing purrfectly!</p>
+        </footer>
+    </aside>
+
+    <main class="view-container">
+
+        <div class="board-container">
+
+            <section class="welcome-banner">
+                <div class="banner-text">
+                    <h1 class="title">Siro App - Project Management</h1>
+                    <p class="subtitle">A little list for a lovely, productive day.</p>
+                    <div class="progress-bar">
+                        <i class='bx bx-calendar-star bx-sm'></i>
+                        <p>Keep it up!</p>
+                        <div class="progress-bar-container">
+                            <div class="progress-bar-fill" style="width: 50%;"></div>
+                            <span class="progress-text">1/2 tasks done</span>
+                        </div>
+                    </div>
+
                 </div>
-                <div class="logo-text">
-                    <h2>Siro Plan</h2>
-                    <span class="logo-subtitle">Make time feel lighter</span>
+                <div class="banner-siro">
+                    <span class="siro-img"></span>
                 </div>
-            </header>
-
-            <section class="calendar-widget">
             </section>
 
-            <section class="pomodoro-widget">
-            </section>
+            <div class="projects-container">
 
-            <footer class="sidebar-footer">
-                <span class="footer-icon"></span>
-                <p class="footer-text">One little task at a time.</p>
-                <p> You're doing purrfectly!</p>
-            </footer>
-        </aside>
+                <section class="projects-section">
+                    <div class="tabs-wrapper">
+                        <button class="tab-btn active" data-project-id="all">All Projects</button>
+                        <button class="tab-btn" data-project-id="1">Web Programming</button>
+                        <button class="tab-btn" data-project-id="2">Design Exam</button>
+                        <button class="tab-btn" data-project-id="3">Thesis</button>
+                    </div>
+                    <button id="btnProject" class="btn-project">
+                        <i class='bx bxs-plus-circle'></i> New Project
+                    </button>
+                </section>
 
-        <main id="view-container">
-        </main>
+                <section class="kanban-section">
 
-    </div>
+                    <div class="tasks-section-header">
+                        <div class="header-titles">
+                            <h2 class="title">My Tasks</h2>
+                            <p class="subtitle">2 sweet little things to do</p>
+                        </div>
+                        <button id="btnTask" class="btn btn-primary btn-task"><i class='bx bxs-plus-circle'></i> New
+                            Task</button>
+                    </div>
 
-    <script type="module" src="./src/index.js"></script>
+                    <div class="kanban-board-layout">
+
+                        <div class="kanban-column" id="column-todo" data-status="To Do">
+                            <div class="column-header status-todo">
+                                <span class="status-dot"></span>
+                                <h3>To Do</h3>
+                                <span class="tasks-count-badge">0</span>
+                            </div>
+
+                            <div class="cards-dropzone" id="tasks-todo-container">
+
+                                <div class="empty-state-cozy">
+                                    <i class='bx bx-heart bx-sm'></i>
+                                    <p>Nothing here yet</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="kanban-column" id="column-inprogress" data-status="In Progress">
+                            <div class="column-header status-inprogress">
+                                <span class="status-dot"></span>
+                                <h3>In Progress</h3>
+                                <span class="tasks-count-badge">1</span>
+                            </div>
+
+                            <div class="cards-dropzone" id="tasks-inprogress-container">
+
+                                <article class="task-card-item" data-id="1">
+                                    <header class="card-item-header">
+                                        <span class="project-label tag-blue">Web Programming</span>
+                                        <button class="btn-card-options" aria-label="Task options">•••</button>
+                                    </header>
+
+                                    <div class="card-item-body">
+                                        <h4 class="task-card-title">Plan cozy launch content</h4>
+                                        <p class="task-card-description">Draft three social posts and gather soft
+                                            pastel visual references.</p>
+                                    </div>
+
+                                    <footer class="card-footer">
+                                        <div class="footer-left">
+                                            <span class="user-avatar">MP</span>
+                                            <span class="priority-badge badge-medium"><i
+                                                    class='bx bxs-flag-alt'></i>Medium</span>
+                                        </div>
+                                        <div class="footer-right">
+                                            <span class="deadline-date-text">Oct 30</span>
+                                            <button class="btn btn-small" aria-label="Move task forward"><i
+                                                    class='bx bx-chevrons-right bx-xs'></i></button>
+                                        </div>
+                                    </footer>
+                                </article>
+
+                            </div>
+                        </div>
+
+                        <div class="kanban-column" id="column-done" data-status="Done">
+                            <div class="column-header status-done">
+                                <span class="status-dot"></span>
+                                <h3>Done</h3>
+                                <span class="tasks-count-badge">1</span>
+                            </div>
+                            <div class="cards-dropzone" id="tasks-done-container">
+
+                                <article class="task-card-item" data-id="2">
+                                    <header class="card-item-header">
+                                        <span class="project-label tag-label">Design Exam</span>
+                                        <button class="btn-card-options" aria-label="Task options"><i
+                                                class='bx bx-dots-horizontal-rounded bx-sm'></i></button>
+                                    </header>
+
+                                    <div class="card-item-body">
+                                        <h4 class="task-card-title">Design the welcome page</h4>
+                                        <p class="task-card-description">Polish the hero section and prepare the final
+                                            mobile layout.</p>
+
+                                        <button class="btn-toggle-checklist">
+                                            <span>See checklist</span>
+                                            <i class='bx bxs-down-arrow'></i>
+                                        </button>
+
+                                        <div class="checklist-container">
+                                            <div class="checklist-item checked">
+                                                <i class='bx bxs-checkbox-checked bx-sm'></i>
+                                                <span>Checklist 1</span>
+                                            </div>
+                                            <div class="checklist-item">
+                                                <i class='bx bx-checkbox bx-sm'></i>
+                                                <span>Checklist 2</span>
+                                            </div>
+                                            <div class="checklist-item">
+                                                <i class='bx bx-checkbox bx-sm'></i>
+                                                <span>Checklist 3</span>
+                                            </div>
+                                            <div class="checklist-item">
+                                                <i class='bx bx-checkbox bx-sm'></i>
+                                                <span>Checklist 4</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <footer class="card-footer">
+                                        <div class="footer-left">
+                                            <span class="user-avatar">MP</span>
+                                            <span class="priority-badge badge-high"><i
+                                                    class='bx bxs-flag-alt'></i>High</span>
+                                        </div>
+                                        <div class="footer-right">
+                                            <span class="deadline-text"><i class='bx bx-calendar-heart bx-xs'></i>
+                                                Oct 28</span>
+                                            <button class="btn btn-small" aria-label="Move task forward"><i
+                                                    class='bx bx-chevrons-right bx-xs'></i></button>
+                                        </div>
+                                    </footer>
+                                </article>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </section>
+            </div>
+
+        </div>
+
+    </main>
 </body>
 
 </html>

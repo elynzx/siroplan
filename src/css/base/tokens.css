@@ -1,0 +1,19 @@
+:root {
+  --color-primary: #f0f0f0;
+  --color-secondary: #ad5c85;
+  --color-tertiary: #81486a;
+  --color-text: #886577;
+  --color-text-mutted: #af8e9f;
+  --color-gray: rgb(233, 220, 227);
+  --color-bg: #fffcf8;
+
+  --font-title: "Baloo 2", sans-serif;
+  --font-main: "Nunito", sans-serif;
+
+  --radius-sm: 12px;
+  --radius-md: 18px;
+  --radius-xl: 24px;
+
+  --shadow-md: 0px 4px 5px rgba(119, 104, 104, 0.205);
+  --transition-fast: all 0.2s ease;
+}
