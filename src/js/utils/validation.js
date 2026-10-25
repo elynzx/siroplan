@@ -5,6 +5,7 @@ export function validateTaskForm(
   taskAssignee,
   taskDeadline,
   taskPriority,
+  taskStatus,
 ) {
   const inputErrors = {};
 
@@ -33,6 +34,10 @@ export function validateTaskForm(
     inputErrors.taskPriority = "Please select a priority level";
   }
 
+  if (!taskStatus || taskStatus.trim() === "") {
+    inputErrors.taskStatus = "Please select an initial task status";
+  }
+  
   const isInputValid = Object.keys(inputErrors).length === 0;
 
   const validationResult = {
