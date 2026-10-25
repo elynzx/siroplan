@@ -6,12 +6,12 @@ export class TaskManager {
     this.taskId = 0;
   }
 
-  addTask(title, description, project, assignee, deadline, priority, status) {
+  addTask(title, description, projectId, assignee, deadline, priority, status) {
     const newTask = new Task(
       this.taskId,
       title,
       description,
-      project,
+      projectId,
       assignee,
       deadline,
       priority,
@@ -48,6 +48,33 @@ export class TaskManager {
     const task = this.taskList.find((task) => task.id === parseInt(taskId));
     if (task) {
       task.assignee = assignee;
+    }
+  }
+
+  getTasksWithProject(projectId) {
+    return this.taskList.filter((task) => task.projectId === parseInt(projectId));
+  }
+
+  updateTaskData(
+    taskId,
+    newTitle,
+    newDescription,
+    newProjectId,
+    newAssignee,
+    newDeadline,
+    newPriority,
+    newStatus,
+  ) {
+    const task = this.taskList.find((task) => task.id === parseInt(taskId));
+
+    if (task) {
+      task.title = newTitle || task.title;
+      task.description = newDescription || task.description;
+      task.projectId = newProjectId || task.projectId;
+      task.assignee = newAssignee || task.assignee;
+      task.deadline = newDeadline || task.deadline;
+      task.priority = newPriority || task.priority;
+      task.status = newStatus || task.status;
     }
   }
 }
