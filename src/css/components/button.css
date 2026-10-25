@@ -1,0 +1,75 @@
+.btn {
+  font-family: var(--font-title);
+  height: 50px;
+  width: 80%;
+  max-width: 160px;
+  padding: 0 14px;
+  border-radius: var(--radius-md);
+  font-weight: bold;
+  font-size: 15px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition-fast);
+}
+
+.btn-primary {
+  border: 1.5px solid var(--color-tertiary);
+  background-color: var(--color-secondary);
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: #d17fa9;
+  transform: translateY(-2px);
+}
+
+.btn-secondary {
+  border: 1.5px solid var(--color-tertiary);
+  background-color: var(--color-gray);
+  color: var(--color-tertiary);
+}
+
+.btn-secondary:hover {
+  background-color: #a58998;
+  color: white;
+  transform: translateY(-2px);
+}
+
+.btn-small {
+  background-color: var(--color-primary);
+  border: 1.5px solid var(--color-tertiary);
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  color: var(--color-text);
+}
+
+.tab-btn {
+  font-family: var(--font-title);
+  font-weight: 600;
+  font-size: 14px;
+  background-color: transparent;
+  color: var(--color-tertiary);
+  border: 1.5px solid var(--color-tertiary);
+  border-bottom: none;
+  border-radius: 12px 12px 0 0;
+  cursor: pointer;
+  transition: var(--transition-fast);
+  margin-right: -1px;
+  width: 20%;
+}
+
+.tab-btn.active {
+  background-color: var(--color-primary);
+  color: var(--color-tertiary);
+  position: relative;
+  border-bottom: 2px solid var(--color-primary);
+  z-index: 6;
+}
+
+.tab-btn:hover:not(.active) {
+  background-color: var(--color-primary);
+}
