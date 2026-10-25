@@ -6,12 +6,12 @@ export class TaskManager {
     this.taskId = 0;
   }
 
-  addTask(title, description, project, assignee, deadline, priority, status) {
+  addTask(title, description, projectId, assignee, deadline, priority, status) {
     const newTask = new Task(
       this.taskId,
       title,
       description,
-      project,
+      projectId,
       assignee,
       deadline,
       priority,
@@ -51,15 +51,15 @@ export class TaskManager {
     }
   }
 
-  getTasksWithProject(project) {
-    return this.taskList.filter((task) => task.project === project);
+  getTasksWithProject(projectId) {
+    return this.taskList.filter((task) => task.projectId === parseInt(projectId));
   }
 
   updateTaskData(
     taskId,
     newTitle,
     newDescription,
-    newProject,
+    newProjectId,
     newAssignee,
     newDeadline,
     newPriority,
@@ -70,7 +70,7 @@ export class TaskManager {
     if (task) {
       task.title = newTitle || task.title;
       task.description = newDescription || task.description;
-      task.project = newProject || task.project;
+      task.projectId = newProjectId || task.projectId;
       task.assignee = newAssignee || task.assignee;
       task.deadline = newDeadline || task.deadline;
       task.priority = newPriority || task.priority;
