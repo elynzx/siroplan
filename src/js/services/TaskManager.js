@@ -50,4 +50,31 @@ export class TaskManager {
       task.assignee = assignee;
     }
   }
+
+  getTasksWithProject(project) {
+    return this.taskList.filter((task) => task.project === project);
+  }
+
+  updateTaskData(
+    taskId,
+    newTitle,
+    newDescription,
+    newProject,
+    newAssignee,
+    newDeadline,
+    newPriority,
+    newStatus,
+  ) {
+    const task = this.taskList.find((task) => task.id === parseInt(taskId));
+
+    if (task) {
+      task.title = newTitle;
+      task.description = newDescription;
+      task.project = newProject;
+      task.assignee = newAssignee;
+      task.deadline = newDeadline;
+      task.priority = newPriority;
+      task.status = newStatus;
+    }
+  }
 }
