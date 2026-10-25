@@ -1,0 +1,15 @@
+.sidebar-aside {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  text-align: center;
+  gap: 24px;
+  width: 320px;
+  height: 100%;
+  padding: 35px;
+  background-color: var(--color-bg);
+  border: 1.5px solid var(--color-tertiary);
+  border-radius: var(--radius-md);
+  color: var(--color-tertiary);
+}
