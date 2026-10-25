@@ -1,11 +1,11 @@
 :root {
-  --color-primary: #ffe7f1;
-  --color-secondary: #f093c6;
+  --color-primary: #f0f0f0;
+  --color-secondary: #ad5c85;
   --color-tertiary: #81486a;
   --color-text: #886577;
   --color-text-mutted: #af8e9f;
   --color-gray: rgb(233, 220, 227);
-  --color-bg: #f8f4f6;
+  --color-bg: #fffcf8;
 
   --font-title: "Baloo 2", sans-serif;
   --font-main: "Nunito", sans-serif;
