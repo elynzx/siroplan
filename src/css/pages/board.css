@@ -115,8 +115,8 @@
   color: var(--color-text);
 }
 
-.btn-task{
-    gap: 6px;
+.btn-task {
+  gap: 6px;
 }
 
 .kanban-board-layout {
@@ -188,4 +188,185 @@
   flex-direction: column;
   gap: 14px;
   min-height: 150px;
+}
+
+@media (max-width: 768px) {
+  .app-layout {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 12px;
+    padding: 12px;
+    overflow: hidden;
+  }
+
+  .sidebar-aside {
+    flex: 0 0 auto;
+    flex-direction: row;
+    justify-content: center;
+    width: 100%;
+    height: auto;
+    min-height: 64px;
+    padding: 10px 14px;
+    gap: 12px;
+    overflow: hidden;
+  }
+
+  .sidebar-aside .calendar-widget,
+  .sidebar-aside .pomodoro-widget,
+  .sidebar-aside .sidebar-footer {
+    display: none;
+  }
+
+  .view-container {
+    min-height: 0;
+    overflow: auto;
+  }
+
+  .welcome-banner {
+    padding: 18px;
+    text-align: center;
+  }
+
+  .welcome-banner .title {
+    font-size: 20px;
+  }
+
+  .progress-bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+  }
+
+  .progress-bar-container {
+    width: 100%;
+    margin-left: 0;
+  }
+
+  .projects-container {
+    height: auto;
+    min-height: calc(100dvh - 190px);
+  }
+
+  .projects-section {
+    align-items: stretch;
+    gap: 6px;
+    padding: 0 4px;
+  }
+
+  .tabs-wrapper {
+    align-items: stretch;
+    flex: 1 1 auto;
+    width: auto;
+    min-width: 0;
+    height: 45px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    flex-wrap: nowrap;
+    scrollbar-width: none;
+    overscroll-behavior-x: contain;
+    margin-left: 12px;
+  }
+
+  .tabs-wrapper::-webkit-scrollbar {
+    display: none;
+  }
+
+  .tabs-wrapper .tab-btn {
+    flex: 0 0 auto;
+    width: auto;
+    min-width: 108px;
+    padding: 0 12px;
+    white-space: nowrap;
+  }
+
+  .btn-project {
+    flex: 0 0 auto;
+    width: 116px;
+    max-width: none;
+    min-width: 0;
+    padding: 0 4px;
+    white-space: nowrap;
+    font-size: 14px;
+  }
+
+  .kanban-section {
+    min-height: 520px;
+    padding: 18px 14px;
+    overflow: hidden;
+  }
+
+  .tasks-section-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 4px;
+    width: 100%;
+  }
+
+  .tasks-section-header .title {
+    font-size: 20px;
+  }
+
+  .tasks-section-header .subtitle {
+    display: none;
+  }
+  .tasks-section-header .header-titles {
+    order: 1;
+  }
+
+  .tasks-section-header .btn-task {
+    order: 2;
+    margin-bottom: 12px;
+  }
+
+  .kanban-board-layout {
+    display: flex;
+    gap: 14px;
+    min-width: 0;
+    min-height: 0;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 2px 2px 12px;
+    align-items: stretch;
+    overscroll-behavior-x: contain;
+    scrollbar-width: thin;
+  }
+
+  .kanban-column {
+    flex: 0 0 min(78vw, 320px);
+    height: auto;
+    min-height: 360px;
+  }
+
+  .task-card-item {
+    min-width: 0;
+  }
+
+  .card-footer {
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .footer-left,
+  .footer-right {
+    flex: 1 1 100%;
+    min-width: 0;
+    justify-content: space-between;
+    gap: 8px;
+  }
+
+  .date-text {
+    min-width: 0;
+    overflow-wrap: anywhere;
+    text-align: left;
+  }
+
+  .priority-badge {
+    flex-shrink: 0;
+  }
 }
