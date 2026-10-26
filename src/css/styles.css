@@ -3,5 +3,6 @@
 @import url("./components/button.css");
 @import url("./components/modal.css");
 @import url("./components/sidebar.css");
+@import url("./components/taskcard.css");
 
 @import url("./pages/board.css");
