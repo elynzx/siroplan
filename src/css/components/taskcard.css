@@ -159,15 +159,15 @@
 }
 
 .badge-low {
-  background-color: #fef3c7;
-  color: #ffd3a1;
+  background-color: var(--color-text-mutted);
+  color: white;
 }
 .badge-medium {
-  background-color: #fef3c7;
-  color: #d97706;
+  background-color: var(--color-secondary);
+  color: white;
 }
 .badge-high {
-  background-color: var(--color-secondary);
+  background-color: var(--color-error);
   color: white;
 }
 
