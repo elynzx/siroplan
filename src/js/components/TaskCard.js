@@ -1,10 +1,10 @@
 import { ProjectManager } from "../services/ProjectManager.js";
 import { formatDate } from "../utils/formatter.js";
 
-export function createTaskCardHTML(task) {
+export function createTaskCardHTML(task, projectManager) {
   const formattedDate = formatDate(task.deadline);
 
-  const project = ProjectManager.getProjectById(task.project);
+  const project = projectManager.getProjectById(task.project);
   const projectName = project ? project.title : "No Name";
 
   return `
