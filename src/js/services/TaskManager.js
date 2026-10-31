@@ -3,7 +3,7 @@ import { Task } from "../models/Task.js";
 export class TaskManager {
   constructor() {
     this.taskList = [];
-    this.taskId = 0;
+    this.taskId = 1;
   }
 
   addTask(title, description, projectId, assignee, deadline, priority, status) {
