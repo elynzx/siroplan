@@ -46,7 +46,7 @@ function createTaskModalHTML(projectManager) {
                 </div>
                 
                 <div class="form-col">
-                    <div class="form-group form-group-col"> <!-- ¡Agregada la clase form-group-col! -->
+                    <div class="form-group form-group-col">
                         <label for="task-assignee">Assignee</label>
                         <input type="text" id="task-assignee" placeholder="Who is responsible?">
                         <span class="error-message" id="error-taskAssignee"></span>
@@ -99,7 +99,7 @@ function createTaskModalHTML(projectManager) {
 
 export function renderTaskModal(taskManager, projectManager) {
   const modalContainer = document.createElement("div");
-  modalContainer.id = "taskModalRoot";
+  modalContainer.id = "taskModal";
 
   modalContainer.innerHTML = createTaskModalHTML(projectManager);
   document.body.appendChild(modalContainer);
@@ -139,12 +139,12 @@ export function renderTaskModal(taskManager, projectManager) {
       );
 
       if (!validationResult.isFormValid) {
-        Object.keys(validationResult.errors).forEach((errorFieldKey) => {
-          const errorField = modalContainer.querySelector(
-            `#error-${errorFieldKey}`,
+        Object.keys(validationResult.errors).forEach((formErrorType) => {
+          const errorMessage = modalContainer.querySelector(
+            `#error-${formErrorType}`,
           );
-          if (errorField) {
-            errorField.textContent = validationResult.errors[errorFieldKey];
+          if (errorMessage) {
+            errorMessage.textContent = validationResult.errors[formErrorType];
           }
         });
         return;

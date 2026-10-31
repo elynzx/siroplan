@@ -1,4 +1,3 @@
-import { ProjectManager } from "../services/ProjectManager.js";
 import { formatDate } from "../utils/formatter.js";
 
 export function createTaskCardHTML(task, projectManager) {
