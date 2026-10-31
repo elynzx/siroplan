@@ -15,16 +15,16 @@ export function renderKanbanBoard(taskManager, projectManager) {
 
   const allTasks = taskManager.getAllTasks();
 
-  const emptyStateHTML = `
+  const emptyTaskHTML = `
     <div class="empty-state-cozy">
         <i class='bx bx-heart bx-sm'></i>
         <p>Nothing here yet</p>
     </div>
   `;
 
-  todoContainer.innerHTML = emptyStateHTML;
-  inprogressContainer.innerHTML = emptyStateHTML;
-  doneContainer.innerHTML = emptyStateHTML;
+  todoContainer.innerHTML = emptyTaskHTML;
+  inprogressContainer.innerHTML = emptyTaskHTML;
+  doneContainer.innerHTML = emptyTaskHTML;
 
   let hasTodo = false,
     hasInprogress = false,

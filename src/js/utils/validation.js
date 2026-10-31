@@ -28,6 +28,16 @@ export function validateTaskForm(
 
   if (!taskDeadline || taskDeadline.trim() === "") {
     inputErrors.taskDeadline = "Please select a valid due date";
+  } else {
+    const selectedDate = new Date(taskDeadline);
+    const todayDate = new Date();
+
+    selectedDate.setHours(0, 0, 0, 0);
+    todayDate.setHours(0, 0, 0, 0);
+
+    if (selectedDate < todayDate) {
+      inputErrors.taskDeadline = "The due date cannot be in the past";
+    }
   }
 
   if (!taskPriority || taskPriority.trim() === "") {
@@ -37,7 +47,7 @@ export function validateTaskForm(
   if (!taskStatus || taskStatus.trim() === "") {
     inputErrors.taskStatus = "Please select an initial task status";
   }
-  
+
   const isInputValid = Object.keys(inputErrors).length === 0;
 
   const validationResult = {

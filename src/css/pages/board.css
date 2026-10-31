@@ -34,6 +34,7 @@
 .progress-bar-fill {
   background-color: var(--color-secondary);
   height: 100%;
+  width: 50%;
 }
 
 .progress-text {
@@ -269,16 +270,11 @@
     margin-left: 12px;
   }
 
-  .tabs-wrapper::-webkit-scrollbar {
-    display: none;
-  }
-
   .tabs-wrapper .tab-btn {
     flex: 0 0 auto;
     width: auto;
     min-width: 108px;
     padding: 0 12px;
-    white-space: nowrap;
   }
 
   .btn-project {

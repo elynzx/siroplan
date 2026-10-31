@@ -3,7 +3,7 @@ import { Project } from "../models/Project.js";
 export class ProjectManager {
   constructor() {
     this.projectList = [];
-    this.projectId = 0;
+    this.projectId = 1;
   }
 
   addProject(title) {

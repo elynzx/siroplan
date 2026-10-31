@@ -6,7 +6,7 @@ export function setupInitialTasks(taskManager, projectManager) {
   taskManager.addTask(
     "Diseño en Figma",
     "Ajustar la paleta de colores.",
-    "1",
+    "2",
     "Evelyn Pascual",
     "2026-10-28",
     "High",
@@ -15,7 +15,7 @@ export function setupInitialTasks(taskManager, projectManager) {
   taskManager.addTask(
     "Código JS",
     "Conectar los botones del modal.",
-    "0",
+    "1",
     "Evelyn Pascual",
     "2026-10-30",
     "Medium",
@@ -24,7 +24,7 @@ export function setupInitialTasks(taskManager, projectManager) {
   taskManager.addTask(
     "Buscar papers",
     "Revisar referencias en Scopus.",
-    "2",
+    "3",
     "Evelyn Pascual",
     "2026-11-05",
     "Low",
@@ -33,7 +33,7 @@ export function setupInitialTasks(taskManager, projectManager) {
   taskManager.addTask(
     "Subir a GitHub",
     "Crear repositorio inicial.",
-    "0",
+    "1",
     "Evelyn Pascual",
     "2026-10-26",
     "Medium",
@@ -42,7 +42,7 @@ export function setupInitialTasks(taskManager, projectManager) {
   taskManager.addTask(
     "Redactar intro",
     "Escribir marco teórico.",
-    "2",
+    "3",
     "Evelyn Pascual",
     "2026-11-10",
     "High",

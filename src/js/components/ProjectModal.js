@@ -12,7 +12,7 @@ function createProjectModalHTML() {
             <form id="formModalProject" class="modal-form">
                 <div class="form-group">
                     <label for="project-name">Project Name</label>
-                    <input type="text" id="project-name" placeholder="e.g. Mobile App Design" required autocomplete="off">
+                    <input type="text" id="project-name" placeholder="Web app project" required autocomplete="off">
                 </div>
                 <footer class="modal-footer">
                     <button type="button" id="closeProjectCancel" class="btn btn-secondary">Cancel</button>
@@ -26,7 +26,7 @@ function createProjectModalHTML() {
 
 export function renderProjectModal(projectManager) {
   const modalContainer = document.createElement("div");
-  modalContainer.id = "projectModalRoot";
+  modalContainer.id = "projectModal";
 
   modalContainer.innerHTML = createProjectModalHTML();
   document.body.appendChild(modalContainer);
@@ -44,10 +44,9 @@ export function renderProjectModal(projectManager) {
       event.preventDefault();
 
       const projectName = document.getElementById("project-name").value;
-
-      renderProjectTabs(projectManager);
-
+      
       projectManager.addProject(projectName);
+      renderProjectTabs(projectManager);
 
       closeModal();
     });
