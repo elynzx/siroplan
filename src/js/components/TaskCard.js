@@ -10,8 +10,8 @@ export function createTaskCardHTML(task, projectManager) {
     <article class="task-card-item" data-id="${task.id}">
       <header class="card-item-header">
         <span class="project-label tag-blue">${projectName}</span>
-        <button class="btn-card-options" aria-label="Task options">
-          <i class='bx bx-dots-horizontal-rounded bx-sm'></i>
+        <button class="btn btn-small btn-complete-task" data-id="${task.id}" aria-label="Complete Task">
+          <i class="hn hn-check-solid"></i>
         </button>
       </header>
 
