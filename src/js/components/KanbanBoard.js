@@ -81,6 +81,14 @@ export function renderKanbanBoard(taskManager, projectManager) {
   document.querySelector("#column-done .tasks-count-badge").textContent =
     taskManager.getTasksWithStatus("Done").length;
 
+  document.querySelectorAll(".btn-complete-task").forEach((btn) => {
+    btn.addEventListener("click", (event) => {
+      const taskId = event.currentTarget.dataset.id;
+      taskManager.updateTask(taskId, "Done");
+      renderKanbanBoard(taskManager, projectManager);
+    });
+  });
+
   document.querySelectorAll(".btn-delete-task").forEach((btn) => {
     btn.addEventListener("click", (event) => {
       const taskId = event.currentTarget.dataset.id;
