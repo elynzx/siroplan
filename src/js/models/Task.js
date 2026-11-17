@@ -1,3 +1,4 @@
+import { SubTask } from "./SubTask.js";
 export class Task {
   constructor(
     id,
@@ -8,6 +9,8 @@ export class Task {
     deadline,
     priority,
     status,
+    subTasks = [],
+    updatedAt = new Date().toISOString(),
   ) {
     this.id = id;
     this.title = title;
@@ -17,5 +20,7 @@ export class Task {
     this.deadline = deadline;
     this.priority = priority;
     this.status = status;
+    this.subTasks = subTasks;
+    this.updatedAt = updatedAt;
   }
 }
