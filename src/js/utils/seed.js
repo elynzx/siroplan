@@ -28,7 +28,7 @@ export function setupInitialTasks(taskManager, projectManager) {
     "Evelyn Pascual",
     "2026-11-05",
     "Low",
-    "To Do",
+    "In Review",
   );
   taskManager.addTask(
     "Subir a GitHub",

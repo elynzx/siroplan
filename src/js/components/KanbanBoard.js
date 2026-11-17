@@ -6,12 +6,19 @@ export function renderKanbanBoard(taskManager, projectManager) {
     "tasks-inprogress-container",
   );
   const doneContainer = document.getElementById("tasks-done-container");
-
-  if (!todoContainer || !inprogressContainer || !doneContainer) return;
+  const inreviewContainer = document.getElementById("tasks-inreview-container");
+  if (
+    !todoContainer ||
+    !inprogressContainer ||
+    !doneContainer ||
+    !inreviewContainer
+  )
+    return;
 
   todoContainer.innerHTML = "";
   inprogressContainer.innerHTML = "";
   doneContainer.innerHTML = "";
+  inreviewContainer.innerHTML = "";
 
   const allTasks = taskManager.getAllTasks();
 
@@ -25,10 +32,12 @@ export function renderKanbanBoard(taskManager, projectManager) {
   todoContainer.innerHTML = emptyTaskHTML;
   inprogressContainer.innerHTML = emptyTaskHTML;
   doneContainer.innerHTML = emptyTaskHTML;
+  inreviewContainer.innerHTML = emptyTaskHTML;
 
   let hasTodo = false,
     hasInprogress = false,
-    hasDone = false;
+    hasDone = false,
+    hasInreview = false;
 
   allTasks.forEach((task) => {
     const cardHTML = createTaskCardHTML(task, projectManager);
@@ -47,6 +56,13 @@ export function renderKanbanBoard(taskManager, projectManager) {
       }
       inprogressContainer.innerHTML += cardHTML;
     }
+    if (task.status === "In Review") {
+      if (!hasInreview) {
+        inreviewContainer.innerHTML = "";
+        hasInreview = true;
+      }
+      inreviewContainer.innerHTML += cardHTML;
+    }
     if (task.status === "Done") {
       if (!hasDone) {
         doneContainer.innerHTML = "";
@@ -60,6 +76,8 @@ export function renderKanbanBoard(taskManager, projectManager) {
     taskManager.getTasksWithStatus("To Do").length;
   document.querySelector("#column-inprogress .tasks-count-badge").textContent =
     taskManager.getTasksWithStatus("In Progress").length;
+  document.querySelector("#column-inreview .tasks-count-badge").textContent =
+    taskManager.getTasksWithStatus("In Review").length;
   document.querySelector("#column-done .tasks-count-badge").textContent =
     taskManager.getTasksWithStatus("Done").length;
 
