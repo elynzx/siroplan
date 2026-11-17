@@ -36,6 +36,11 @@
   font-size: 16px;
 }
 
+.hn-check-solid {
+  color: var(--color-text-mutted);
+  font-size: 18px;
+}
+
 .task-card-title {
   font-family: var(--font-title);
   font-size: 16px;
