@@ -40,7 +40,7 @@ export class TaskManager {
   updateTask(taskId, status) {
     const task = this.taskList.find((task) => task.id === parseInt(taskId));
     if (task) {
-      task.estado = status;
+      task.status = status;
     }
   }
 
@@ -52,7 +52,9 @@ export class TaskManager {
   }
 
   getTasksWithProject(projectId) {
-    return this.taskList.filter((task) => task.projectId === parseInt(projectId));
+    return this.taskList.filter(
+      (task) => task.projectId === parseInt(projectId),
+    );
   }
 
   updateTaskData(
