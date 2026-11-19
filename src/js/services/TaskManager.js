@@ -6,7 +6,17 @@ export class TaskManager {
     this.taskId = 1;
   }
 
-  addTask(title, description, projectId, assignee, deadline, priority, status) {
+  addTask(
+    title,
+    description,
+    projectId,
+    assignee,
+    deadline,
+    priority,
+    status,
+    subTasks,
+    updatedAt,
+  ) {
     const newTask = new Task(
       this.taskId,
       title,
@@ -16,11 +26,17 @@ export class TaskManager {
       deadline,
       priority,
       status,
+      subTasks,
+      updatedAt,
     );
 
     this.taskList.push(newTask);
     this.taskId++;
     return newTask;
+  }
+
+  addSubtask(){
+    
   }
 
   getAllTasks() {
@@ -37,10 +53,11 @@ export class TaskManager {
     );
   }
 
-  updateTask(taskId, status) {
+  updateTask(taskId, newStatus) {
     const task = this.taskList.find((task) => task.id === parseInt(taskId));
     if (task) {
-      task.status = status;
+      task.status = newStatus;
+      task.updatedAt = new Date().toISOString();
     }
   }
 
@@ -66,6 +83,7 @@ export class TaskManager {
     newDeadline,
     newPriority,
     newStatus,
+    newSubTasks,
   ) {
     const task = this.taskList.find((task) => task.id === parseInt(taskId));
 
@@ -77,6 +95,7 @@ export class TaskManager {
       task.deadline = newDeadline || task.deadline;
       task.priority = newPriority || task.priority;
       task.status = newStatus || task.status;
+      task.subTasks = newSubTasks || task.subTasks;
     }
   }
 }
