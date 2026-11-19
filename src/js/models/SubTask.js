@@ -1,7 +1,7 @@
 export class SubTask {
-  constructor(id, text, completed = false) {
+  constructor(id = crypto.randomUUID(), description, completed = false) {
     this.id = id;
-    this.text = text;
+    this.description = description;
     this.completed = completed;
   }
 }
