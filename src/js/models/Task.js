@@ -23,4 +23,9 @@ export class Task {
     this.subTasks = subTasks;
     this.updatedAt = updatedAt;
   }
+
+  addSubtask(description, completed = false) {
+    const newSubtask = new SubTask(description, completed);
+    this.subTasks.push()
+  }
 }
