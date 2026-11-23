@@ -5,9 +5,9 @@
   align-items: center;
   text-align: center;
   gap: 24px;
-  width: 320px;
+  width: 400px;
   height: 100%;
-  padding: 35px;
+  padding: 22px;
   background-color: var(--color-bg);
   border: 1.5px solid var(--color-tertiary);
   border-radius: var(--radius-md);
