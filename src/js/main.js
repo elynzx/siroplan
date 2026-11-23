@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const taskManager = new TaskManager();
   const projectManager = new ProjectManager();
 
-  setupInitialTasks(taskManager, projectManager);
+  projectManager.loadFromLocalStorage();
 
   const btnProject = document.getElementById("btnProject");
   const btnTask = document.getElementById("btnTask");

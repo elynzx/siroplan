@@ -37,14 +37,14 @@ export class ProjectManager {
   }
 
   loadFromLocalStorage() {
-    const proyectosGuardados = localStorage.getItem("projects_key");
-    if (proyectosGuardados !== null) {
-      this.projectList = JSON.parse(proyectosGuardados);
+    const storedProjects = localStorage.getItem("projects_key");
+    if (storedProjects !== null) {
+      this.projectList = JSON.parse(storedProjects);
     }
 
-    const ultimoIdGuardado = localStorage.getItem("project_id_key");
-    if (ultimoIdGuardado !== null) {
-      this.projectId = Number(ultimoIdGuardado);
+    const lastProjectId = localStorage.getItem("project_id_key");
+    if (lastProjectId !== null) {
+      this.projectId = Number(lastProjectId);
     }
   }
 }
