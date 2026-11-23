@@ -32,12 +32,11 @@ export class TaskManager {
 
     this.taskList.push(newTask);
     this.taskId++;
+    this.saveToLocalStorage();
     return newTask;
   }
 
-  addSubtask(){
-    
-  }
+  addSubtask() {}
 
   getAllTasks() {
     return this.taskList;
@@ -51,6 +50,7 @@ export class TaskManager {
     this.taskList = this.taskList.filter(
       (task) => task.id !== parseInt(taskId),
     );
+    this.saveToLocalStorage();
   }
 
   updateTask(taskId, newStatus) {
@@ -58,6 +58,7 @@ export class TaskManager {
     if (task) {
       task.status = newStatus;
       task.updatedAt = new Date().toISOString();
+      this.saveToLocalStorage();
     }
   }
 
@@ -65,6 +66,7 @@ export class TaskManager {
     const task = this.taskList.find((task) => task.id === parseInt(taskId));
     if (task) {
       task.assignee = assignee;
+      this.saveToLocalStorage();
     }
   }
 
@@ -96,6 +98,24 @@ export class TaskManager {
       task.priority = newPriority || task.priority;
       task.status = newStatus || task.status;
       task.subTasks = newSubTasks || task.subTasks;
+      this.saveToLocalStorage();
+    }
+  }
+
+  saveToLocalStorage() {
+    localStorage.setItem("tasks_key", JSON.stringify(this.taskList));
+    localStorage.setItem("task_id_key", this.taskId);
+  }
+
+  loadFromLocalStorage() {
+    const storedTasks = localStorage.getItem("tasks_key");
+    if (storedTasks !== null) {
+      this.taskList = JSON.parse(storedTasks);
+    }
+
+    const lastTaskId = localStorage.getItem("task_id_key");
+    if (lastTaskId !== null) {
+      this.taskId = Number(lastTaskId);
     }
   }
 }
