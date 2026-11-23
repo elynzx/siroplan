@@ -6,11 +6,15 @@ export function createTaskCardHTML(task, projectManager) {
   const project = projectManager.getProjectById(task.project);
   const projectName = project ? project.title : "No Name";
 
-  return `
+  return html`
     <article class="task-card-item" data-id="${task.id}">
       <header class="card-item-header">
         <span class="project-label tag-blue">${projectName}</span>
-        <button class="btn btn-small btn-complete-task" data-id="${task.id}" aria-label="Complete Task">
+        <button
+          class="btn btn-small btn-complete-task"
+          data-id="${task.id}"
+          aria-label="Complete Task"
+        >
           <i class="hn hn-check-solid"></i>
         </button>
       </header>
@@ -24,18 +28,17 @@ export function createTaskCardHTML(task, projectManager) {
         <div class="footer-left">
           <span class="user-avatar">MP</span>
           <span class="priority-badge badge-${task.priority.toLowerCase()}">
-            <i class='bx bxs-flag-alt'></i>${task.priority}
+            <i class="bx bxs-flag-alt"></i>${task.priority}
           </span>
         </div>
         <div class="footer-right">
           <span class="date-text">
-            <i class='bx bx-calendar-heart bx-xs'></i> ${formattedDate}
+            <i class="bx bx-calendar-heart bx-xs"></i> ${formattedDate}
           </span>
 
           <button class="btn  btn-small btn-delete-task" data-id="${task.id}">
-            <i class='bx bx-trash-alt bx-xs' ></i>
+            <i class="bx bx-trash-alt bx-xs"></i>
           </button>
-
         </div>
       </footer>
     </article>
