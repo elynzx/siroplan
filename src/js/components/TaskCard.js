@@ -6,7 +6,7 @@ export function createTaskCardHTML(task, projectManager) {
   const project = projectManager.getProjectById(task.project);
   const projectName = project ? project.title : "No Name";
 
-  return html`
+  return `
     <article class="task-card-item" data-id="${task.id}">
       <header class="card-item-header">
         <span class="project-label tag-blue">${projectName}</span>

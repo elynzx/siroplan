@@ -13,7 +13,7 @@ function createTaskModalHTML(projectManager) {
     projectOptionsHTML = `<option value="">No projects available</option>`;
   }
 
-  return html`
+  return `
     <div class="modal-overlay">
       <article class="modal-card modal-task">
         <button
@@ -112,7 +112,7 @@ function createTaskModalHTML(projectManager) {
             >
               Maybe later
             </button>
-            <button type="submit" class="btn btn-primary">
+            <button type="submit" class="btn btn-primary btn-submit">
               <i class="bx bx-plus"></i> Create Task
             </button>
           </footer>
@@ -122,12 +122,30 @@ function createTaskModalHTML(projectManager) {
   `;
 }
 
-export function renderTaskModal(taskManager, projectManager) {
+export function renderTaskModal(
+  taskManager,
+  projectManager,
+  taskToEdit = null,
+) {
   const modalContainer = document.createElement("div");
   modalContainer.id = "taskModal";
 
   modalContainer.innerHTML = createTaskModalHTML(projectManager);
   document.body.appendChild(modalContainer);
+
+  if (taskToEdit) {
+    document.querySelector("#taskModal .title").textContent = "Edit Task";
+    document.querySelector("#formModalTask .btn-submit").textContent =
+      "Save Changes";
+
+    document.getElementById("task-title").value = taskToEdit.title;
+    document.getElementById("task-desc").value = taskToEdit.description;
+    document.getElementById("task-project").value = taskToEdit.project;
+    document.getElementById("task-assignee").value = taskToEdit.assignee;
+    document.getElementById("task-date").value = taskToEdit.deadline;
+    document.getElementById("task-priority").value = taskToEdit.priority;
+    document.getElementById("task-status").value = taskToEdit.status;
+  }
 
   const closeModal = () => modalContainer.remove();
 
@@ -175,15 +193,28 @@ export function renderTaskModal(taskManager, projectManager) {
         return;
       }
 
-      taskManager.addTask(
-        taskTitle,
-        taskDescription,
-        project,
-        taskAssignee,
-        taskDeadline,
-        taskPriority,
-        taskStatus,
-      );
+      if (taskToEdit) {
+        taskManager.updateTaskData(
+          taskToEdit.id,
+          taskTitle,
+          taskDescription,
+          project,
+          taskAssignee,
+          taskDeadline,
+          taskPriority,
+          taskStatus,
+        );
+      } else {
+        taskManager.addTask(
+          taskTitle,
+          taskDescription,
+          project,
+          taskAssignee,
+          taskDeadline,
+          taskPriority,
+          taskStatus,
+        );
+      }
 
       renderKanbanBoard(taskManager, projectManager);
       closeModal();
