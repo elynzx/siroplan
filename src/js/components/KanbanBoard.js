@@ -1,4 +1,5 @@
 import { createTaskCardHTML } from "./TaskCard.js";
+import { renderTaskModal } from "./TaskModal.js";
 
 export function renderKanbanBoard(taskManager, projectManager) {
   const todoContainer = document.getElementById("tasks-todo-container");
@@ -94,6 +95,26 @@ export function renderKanbanBoard(taskManager, projectManager) {
       const taskId = event.currentTarget.dataset.id;
       taskManager.deleteTask(taskId);
       renderKanbanBoard(taskManager, projectManager);
+    });
+  });
+
+  document.querySelectorAll(".task-card-item").forEach((card) => {
+    card.addEventListener("click", (event) => {
+      if (
+        event.target.closest(".btn-complete-task") ||
+        event.target.closest(".btn-delete-task")
+      ) {
+        return;
+      }
+
+      const taskId = event.currentTarget.dataset.id;
+      const taskToEdit = taskManager
+        .getAllTasks()
+        .find((task) => task.id === parseInt(taskId));
+
+      if (taskToEdit) {
+        renderTaskModal(taskManager, projectManager, taskToEdit);
+      }
     });
   });
 }
