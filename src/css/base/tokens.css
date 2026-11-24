@@ -1,12 +1,14 @@
 :root {
-  --color-primary: #f0f0f0;
-  --color-secondary: #cc74af;
-  --color-tertiary: #81486a;
-  --color-text: #886577;
-  --color-text-mutted: #af8e9f;
-  --color-gray: rgb(233, 220, 227);
   --color-bg: #fffcf8;
-  --color-error: rgb(170, 49, 124);
+  --color-surface: #ffffff;
+  --color-primary: #eeeeee;
+  --color-secondary: #da97c3;
+  --color-tertiary: #603521;
+  --color-text: #5c3e4e;
+
+  --color-text-mutted: var(--color-text);
+  --color-gray: var(--color-primary);
+  --color-error: var(--color-tertiary);
 
   --font-title: "Baloo 2", sans-serif;
   --font-main: "Nunito", sans-serif;
@@ -15,6 +17,18 @@
   --radius-md: 18px;
   --radius-xl: 24px;
 
-  --shadow-md: 0px 4px 5px rgba(119, 104, 104, 0.205);
+  --border-main: 1.5px solid var(--color-tertiary);
+  --border-input: 1.5px solid var(--color-text);
+  --border-dashed: 1.5px dashed var(--color-tertiary);
+
+  --shadow-md: 0px 4px 10px rgba(129, 72, 106, 0.12);
+  --shadow-btn: 0 2px 0 var(--color-tertiary);
+  --shadow-btn-lg: 0 3px 0 var(--color-tertiary);
+  --shadow-btn-hover: 0 4px 0 var(--color-tertiary);
+  --shadow-btn-active: 0 1px 0 var(--color-tertiary);
+
   --transition-fast: all 0.2s ease;
+  --transition-bounce:
+    transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1),
+    background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
 }

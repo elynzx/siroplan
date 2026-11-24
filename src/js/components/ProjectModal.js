@@ -1,7 +1,7 @@
 import { renderProjectTabs } from "./ProjectTabs.js";
 
 function createProjectModalHTML() {
-  return html`
+  return `
     <div class="modal-overlay">
       <article class="modal-card">
         <button

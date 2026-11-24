@@ -1,6 +1,5 @@
 .btn {
   font-family: var(--font-title);
-  max-width: 160px;
   border-radius: var(--radius-md);
   font-weight: bold;
   cursor: pointer;
@@ -14,7 +13,9 @@
   border: 1.5px solid var(--color-tertiary);
   background-color: var(--color-secondary);
   color: white;
-  padding: 9px 25px;
+  max-width: 160px;
+  height: 40px;
+  width: 100%;
 }
 
 .btn-primary:hover {
