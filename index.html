@@ -92,46 +92,33 @@
 
         <div class="board-container">
 
-            <section class="welcome-banner">
-                <div class="banner-text">
-                    <h1 class="title">Siro App - Project Management</h1>
-                    <p class="subtitle">A little list for a lovely, productive day.</p>
-                    <div class="progress-bar">
-                        <i class='bx bx-calendar-star bx-sm'></i>
-                        <p>Keep it up!</p>
-                        <div class="progress-bar-container">
-                            <div class="progress-bar-fill"></div>
-                            <span class="progress-text">1/2 tasks done</span>
-                        </div>
+            <section class="banner-container">
+                <div class="progress-bar">
+                    <i class='bx bx-calendar-star bx-sm'></i>
+                    <p>Keep it up!</p>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar-fill"></div>
+                        <span class="progress-text">1/2 tasks done</span>
                     </div>
+                </div>
 
-                </div>
-                <div class="banner-siro">
-                    <span class="siro-img"></span>
-                </div>
+
+                <button id="btnTask" class="btn btn-primary btn-task">
+                    <i class='bx bxs-plus-circle'></i> New Task
+                </button>
             </section>
 
             <div class="projects-container">
 
                 <section class="projects-section">
                     <div class="tabs-wrapper">
-
                     </div>
-                    <button id="btnProject" class="btn-project">
+                    <button id="btnProject" class="btn btn-project">
                         <i class='bx bxs-plus-circle'></i> New Project
                     </button>
                 </section>
 
                 <section class="kanban-section">
-                    <div class="tasks-section-header">
-                        <div class="header-titles">
-                            <h2 class="title">My Tasks</h2>
-                            <p class="subtitle">Little things to do</p>
-                        </div>
-                        <button id="btnTask" class="btn btn-primary btn-task"><i class='bx bxs-plus-circle'></i> New
-                            Task</button>
-                    </div>
-
                     <div class="kanban-board-layout">
                         <div class="kanban-column" id="column-todo" data-status="To Do">
                             <div class="column-header status-todo">
