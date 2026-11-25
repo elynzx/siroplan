@@ -1,0 +1,14 @@
+/* =========================================================
+   Project Modal Specific Styles
+   ========================================================= */
+
+#projectModal {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+}
+
+.modal-project {
+  max-width: 480px;
+  height: auto;
+}

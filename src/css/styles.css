@@ -1,10 +1,19 @@
 @import url("./base/tokens.css");
 @import url("./base/global.css");
-@import url("./components/button.css");
-@import url("./components/modal.css");
-@import url("./components/sidebar.css");
-@import url("./components/pomodoro.css");
+@import url("./base/animations.css");
+@import url("./base/button.css");
+@import url("./base/modal.css");
 
-@import url("./components/taskcard.css");
+@import url("../components/splash/splash.css");
+@import url("../components/sidebar/sidebar.css");
+@import url("../components/pomodoro/pomodoro.css");
 
-@import url("./pages/board.css");
+@import url("../views/kanban/kanban.css");
+@import url("../views/kanban/components/progress-bar/progress-bar.css");
+@import url("../views/kanban/components/project-tabs/project-tabs.css");
+@import url("../views/kanban/components/task-card/task-card.css");
+@import url("../views/kanban/components/project-modal/project-modal.css");
+@import url("../views/kanban/components/task-modal/task-modal.css");
+
+@import url("../views/dashboard/dashboard.css");
+@import url("../views/projects/projects.css");

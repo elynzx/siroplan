@@ -1,0 +1,83 @@
+.progress-bar {
+  width: 450px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 7px;
+  font-family: var(--font-title);
+  font-weight: 600;
+  color: var(--color-tertiary);
+  font-size: 14px;
+}
+
+.siro-speech-bubble {
+  align-self: flex-start;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background-color: var(--color-surface);
+  border: 2px solid var(--color-tertiary);
+  border-radius: 14px 14px 14px 14px;
+  padding: 6px 18px;
+  box-shadow: var(--shadow-md);
+  margin-left: 4px;
+  animation: cuteFloat 3.2s ease-in-out infinite;
+}
+
+.siro-speech-bubble::before {
+  content: "";
+  position: absolute;
+  left: -5px;
+  bottom: 4px;
+  width: 8px;
+  height: 12px;
+  background-color: var(--color-surface);
+  border-left: 2px solid var(--color-tertiary);
+  border-bottom: 2px solid var(--color-tertiary);
+  transform: rotate(29deg);
+  border-radius: 0 0 0 3px;
+}
+
+.siro-speech-bubble i {
+  font-size: 20px;
+}
+
+.progress-label {
+  font-family: var(--font-title);
+  font-size: 13px;
+  color: var(--color-tertiary);
+}
+
+.progress-bar-container {
+  width: 100%;
+  background-color: var(--color-surface);
+  border: var(--border-main);
+  border-radius: var(--radius-md);
+  height: 26px;
+  position: relative;
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  background-color: var(--color-secondary);
+  height: 100%;
+  width: 50%;
+  transition: width 0.3s ease;
+}
+
+.progress-text {
+  position: absolute;
+  top: 50%;
+  left: 16px;
+  transform: translateY(-50%);
+  z-index: 2;
+  font-family: var(--font-title);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-surface);
+  margin-left: 12px;
+}

@@ -1,0 +1,373 @@
+.board-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+  gap: 20px;
+}
+
+.board-header {
+  border-radius: var(--radius-md);
+  border: var(--border-main);
+  box-shadow: var(--shadow-md);
+  padding: 16px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+}
+
+.board-brand {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  width: 100%;
+}
+
+.header-progress-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.siro-pointing-container {
+  width: 86px;
+  height: 74px;
+  flex-shrink: 0;
+  margin: 0;
+  position: relative;
+  overflow: hidden;
+  transition: var(--transition-bounce);
+  animation: cuteFloat 3.2s ease-in-out infinite;
+}
+
+.siro-pointing-container img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transform: scale(1.75);
+  transform-origin: center;
+}
+
+.siro-pointing-container .frame-2 {
+  animation: catPointFrame1 3.4s infinite steps(1);
+}
+
+.siro-pointing-container .frame-1 {
+  animation: catPointFrame2 3.4s infinite steps(1);
+}
+
+@keyframes catPointFrame1 {
+  0%,
+  34%,
+  43.1%,
+  74%,
+  81.1%,
+  86%,
+  93.1%,
+  100% {
+    opacity: 1;
+  }
+  34.1%,
+  74.1%,
+  86.1% {
+    opacity: 0;
+  }
+}
+
+@keyframes catPointFrame2 {
+  0%,
+  34%,
+  43.1%,
+  74%,
+  81.1%,
+  86%,
+  93.1%,
+  100% {
+    opacity: 0;
+  }
+  34.1%,
+  74.1%,
+  86.1% {
+    opacity: 1;
+  }
+}
+
+.brand-text {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2px;
+}
+
+.brand-text .title {
+  font-size: 24px;
+  line-height: 1.1;
+}
+
+.brand-text .subtitle {
+  margin-bottom: 0;
+  font-size: 13px;
+}
+
+/* Projects */
+.projects-container {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  margin-top: 14px;
+}
+
+/* Kanban */
+.kanban-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background-color: var(--color-canvas);
+  border: var(--border-main);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  padding: 22px 26px;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.kanban-mobile-toolbar {
+  display: none;
+}
+
+.tasks-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.subtitle-tasks {
+  font-family: var(--font-main);
+  font-size: 13px;
+  color: var(--color-text);
+}
+
+.kanban-board-layout {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-rows: minmax(0, 1fr);
+  gap: 20px;
+  align-items: stretch;
+  flex: 1;
+  min-height: 0;
+}
+
+.kanban-column {
+  background-color: var(--color-surface);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  box-shadow: var(--shadow-md);
+  height: 100%;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 2px solid transparent;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.kanban-column.is-drag-over {
+  background-color: var(--color-bg);
+  border: 2px dashed var(--color-secondary);
+}
+
+.column-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-bottom: 12px;
+  border-bottom: var(--border-dashed);
+  margin-bottom: 12px;
+  flex-shrink: 0;
+}
+
+.column-header h3 {
+  font-family: var(--font-title);
+  font-size: 18px;
+  color: var(--color-tertiary);
+  flex-grow: 1;
+}
+
+.status-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: var(--border-main);
+}
+
+.status-todo .status-dot {
+  background-color: var(--dot-todo);
+}
+.status-inprogress .status-dot {
+  background-color: var(--dot-inprogress);
+}
+.status-inreview .status-dot {
+  background-color: var(--dot-inreview);
+}
+.status-done .status-dot {
+  background-color: var(--dot-done);
+}
+
+.tasks-count-badge {
+  background-color: var(--color-primary);
+  border-radius: 5px;
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-title);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--color-tertiary);
+}
+
+.cards-dropzone {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 2px 4px 4px 2px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-primary) transparent;
+}
+
+.cards-dropzone::-webkit-scrollbar {
+  width: 5px;
+}
+
+.cards-dropzone::-webkit-scrollbar-thumb {
+  background-color: var(--color-primary);
+  border-radius: 10px;
+}
+
+@media (max-width: 900px) {
+  .board-container {
+    gap: 6px;
+  }
+
+  .board-header {
+    padding: 14px 14px;
+    margin-top: 12px;
+  }
+
+  .board-header .brand-text {
+    display: none;
+  }
+
+  .board-brand {
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .header-progress-group {
+    width: 100%;
+    justify-content: space-between;
+    gap: 10px;
+  }
+
+  .siro-pointing-container {
+    width: 68px;
+    height: 58px;
+  }
+
+  .progress-bar {
+    flex: 1;
+    width: auto;
+    max-width: 100%;
+  }
+
+  .projects-container {
+    margin-top: 2px;
+    flex: 1;
+    min-height: 0;
+  }
+
+  .kanban-section {
+    flex: 1;
+    min-height: 0;
+    padding: 10px;
+    gap: 10px;
+    overflow: hidden;
+  }
+
+  .kanban-mobile-toolbar {
+    display: flex;
+    justify-content: center;
+    position: fixed;
+    bottom: 20px;
+    left: 0;
+    right: 0;
+    pointer-events: none;
+    z-index: 9000;
+  }
+
+  .btn-task-mobile {
+    pointer-events: auto;
+    width: auto;
+    margin-bottom: 20px;
+    box-shadow: 0 6px 18px rgba(77, 72, 81, 0.22);
+  }
+
+  .cards-dropzone {
+    padding-bottom: 58px;
+  }
+
+  .kanban-board-layout {
+    display: flex;
+    gap: 12px;
+    height: 100%;
+    min-width: 0;
+    min-height: 0;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 2px 4px 6px;
+    align-items: stretch;
+    scroll-snap-type: x mandatory;
+    overscroll-behavior-x: contain;
+    scrollbar-width: thin;
+  }
+
+  .kanban-column {
+    flex: 0 0 min(82vw, 310px);
+    height: 100%;
+    min-height: 0;
+    scroll-snap-align: center;
+    padding: 12px;
+  }
+
+  .task-card-item {
+    min-width: 0;
+    padding: 12px;
+    gap: 10px;
+  }
+
+  .card-footer {
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+  }
+}
