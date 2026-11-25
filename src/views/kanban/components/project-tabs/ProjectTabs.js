@@ -1,59 +1,88 @@
 import { renderProjectModal } from "../project-modal/ProjectModal.js";
 
+/**
+ * Renders the project navigation tabs, mobile dropdown and manages click/edit events.
+ *
+ * @param {Object} projectManager - The ProjectManager instance.
+ * @param {Function|null} [onSelectProject=null] - Optional callback function invoked when a project tab is selected.
+ * @returns {void}
+ */
 export function renderProjectTabs(projectManager, onSelectProject = null) {
   const tabsContainer = document.querySelector(".tabs-wrapper");
   if (!tabsContainer) return;
 
-  if (onSelectProject) {
-    projectManager._onSelectProject = onSelectProject;
+  const allProjects = projectManager.getAllProjects();
+  const activeId = projectManager.getActiveProject();
+
+  let activeProject = null;
+  if (activeId !== "all") {
+    activeProject = projectManager.getProjectById(activeId);
   }
 
-  const allProjects = projectManager.getAllProjects();
-  const activeId = projectManager.getActiveProject
-    ? projectManager.getActiveProject()
-    : "all";
-  const activeProject =
-    activeId !== "all" ? projectManager.getProjectById(activeId) : null;
+  // Build Desktop Tabs HTML
+  let allTabActiveClass = "";
+  if (activeId === "all") {
+    allTabActiveClass = "active";
+  }
 
   let tabsHTML = `
-    <button class="tab-btn tab-btn-all ${activeId === "all" ? "active" : ""}" data-project-id="all">
+    <button class="tab-btn tab-btn-all ${allTabActiveClass}" data-project-id="all">
       <span class="tab-all-desktop">All Projects</span>
       <span class="tab-all-mobile">All</span>
     </button>
   `;
 
   allProjects.forEach((project) => {
-    const isActive = String(activeId) === String(project.id);
+    let itemActiveClass = "";
+    if (String(activeId) === String(project.id)) {
+      itemActiveClass = "active";
+    }
+
     tabsHTML += `
-      <button class="tab-btn tab-btn-item ${isActive ? "active" : ""}" data-project-id="${project.id}" title="Double click to edit project">
+      <button class="tab-btn tab-btn-item ${itemActiveClass}" data-project-id="${project.id}" title="Double click to edit project">
         <span class="tab-title">${project.title}</span>
       </button>
     `;
   });
 
-  const mobileTabLabel = activeProject ? activeProject.title : "Select Project";
-  const mobileMenuItemsHTML =
-    allProjects.length > 0
-      ? allProjects
-          .map(
-            (project) => `
-          <div class="mobile-project-option ${String(activeId) === String(project.id) ? "is-active" : ""}" data-project-id="${project.id}">
-            <span class="mobile-option-title">${project.title}</span>
-            <button type="button" class="btn btn-small mobile-option-edit" data-edit-id="${project.id}" aria-label="Edit project">
-              <i class='bx bxs-pencil'></i>
-            </button>
-          </div>
-        `,
-          )
-          .join("")
-      : `<div class="mobile-project-empty">No projects yet</div>`;
+  // Build mobile dropdown Menu HTML
+  let mobileTabLabel = "Select Project";
+  if (activeProject) {
+    mobileTabLabel = activeProject.title;
+  }
+
+  let mobileMenuItemsHTML = "";
+  if (allProjects.length > 0) {
+    allProjects.forEach((project) => {
+      let optionActiveClass = "";
+      if (String(activeId) === String(project.id)) {
+        optionActiveClass = "is-active";
+      }
+
+      mobileMenuItemsHTML += `
+        <div class="mobile-project-option ${optionActiveClass}" data-project-id="${project.id}">
+          <span class="mobile-option-title">${project.title}</span>
+          <button type="button" class="btn btn-small mobile-option-edit" data-edit-id="${project.id}" aria-label="Edit project">
+            <i class='bx bxs-pencil'></i>
+          </button>
+        </div>
+      `;
+    });
+  } else {
+    mobileMenuItemsHTML = `<div class="mobile-project-empty">No projects yet</div>`;
+  }
+
+  let mobileDropdownActiveClass = "";
+  if (activeId !== "all") {
+    mobileDropdownActiveClass = "active";
+  }
 
   tabsHTML += `
     <div class="mobile-project-tab-wrapper">
       <button
         type="button"
         id="mobileProjectTabBtn"
-        class="tab-btn tab-btn-dropdown ${activeId !== "all" ? "active" : ""}"
+        class="tab-btn tab-btn-dropdown ${mobileDropdownActiveClass}"
         aria-expanded="false"
       >
         <span class="tab-title">${mobileTabLabel}</span>
@@ -71,33 +100,37 @@ export function renderProjectTabs(projectManager, onSelectProject = null) {
 
   tabsContainer.innerHTML = tabsHTML;
 
+  // Selection Helper Function
   const selectProject = (selectedId) => {
-    if (projectManager.setActiveProject) {
-      projectManager.setActiveProject(selectedId);
-    }
-    renderProjectTabs(projectManager);
-    if (typeof projectManager._onSelectProject === "function") {
-      projectManager._onSelectProject(selectedId);
+    projectManager.setActiveProject(selectedId);
+    renderProjectTabs(projectManager, onSelectProject);
+
+    if (typeof onSelectProject === "function") {
+      onSelectProject(selectedId);
     }
   };
 
-  tabsContainer
-    .querySelectorAll(".tab-btn-all, .tab-btn-item")
-    .forEach((tabBtn) => {
-      tabBtn.addEventListener("click", () => {
-        selectProject(tabBtn.dataset.projectId);
-      });
-
-      tabBtn.addEventListener("dblclick", () => {
-        const selectedId = tabBtn.dataset.projectId;
-        if (selectedId === "all") return;
-        const project = projectManager.getProjectById(selectedId);
-        if (project) {
-          renderProjectModal(projectManager, project);
-        }
-      });
+  // Listeners for Desktop Tabs
+  const desktopTabs = tabsContainer.querySelectorAll(
+    ".tab-btn-all, .tab-btn-item",
+  );
+  desktopTabs.forEach((tabBtn) => {
+    tabBtn.addEventListener("click", () => {
+      selectProject(tabBtn.dataset.projectId);
     });
 
+    tabBtn.addEventListener("dblclick", () => {
+      const selectedId = tabBtn.dataset.projectId;
+      if (selectedId === "all") return;
+
+      const project = projectManager.getProjectById(selectedId);
+      if (project) {
+        renderProjectModal(projectManager, project);
+      }
+    });
+  });
+
+  // Listeners for Mobile Dropdown Menu
   const mobileTabBtn = tabsContainer.querySelector("#mobileProjectTabBtn");
   const mobileMenu = tabsContainer.querySelector("#mobileProjectMenu");
 
@@ -109,13 +142,15 @@ export function renderProjectTabs(projectManager, onSelectProject = null) {
       mobileTabBtn.setAttribute("aria-expanded", String(isOpen));
     });
 
-    mobileMenu.querySelectorAll(".mobile-project-option").forEach((opt) => {
+    const mobileOptions = mobileMenu.querySelectorAll(".mobile-project-option");
+    mobileOptions.forEach((opt) => {
       opt.addEventListener("click", (event) => {
         const editBtn = event.target.closest(".mobile-option-edit");
         if (editBtn) {
           event.stopPropagation();
           mobileMenu.classList.remove("is-open");
           mobileTabBtn.classList.remove("is-open");
+
           const project = projectManager.getProjectById(editBtn.dataset.editId);
           if (project) {
             renderProjectModal(projectManager, project);
@@ -138,16 +173,12 @@ export function renderProjectTabs(projectManager, onSelectProject = null) {
       });
     }
 
-    document.addEventListener(
-      "click",
-      (event) => {
-        if (!event.target.closest(".mobile-project-tab-wrapper")) {
-          mobileMenu.classList.remove("is-open");
-          mobileTabBtn.classList.remove("is-open");
-          mobileTabBtn.setAttribute("aria-expanded", "false");
-        }
-      },
-      { once: true },
-    );
+    document.addEventListener("click", (event) => {
+      if (!event.target.closest(".mobile-project-tab-wrapper")) {
+        mobileMenu.classList.remove("is-open");
+        mobileTabBtn.classList.remove("is-open");
+        mobileTabBtn.setAttribute("aria-expanded", "false");
+      }
+    });
   }
 }
