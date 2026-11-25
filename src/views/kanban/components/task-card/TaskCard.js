@@ -6,38 +6,54 @@ export function createTaskCardHTML(task, projectManager) {
   const project = projectManager.getProjectById(task.project);
   const projectName = project ? project.title : "No Name";
 
-  const subTasks = Array.isArray(task.subTasks) ? task.subTasks : [];
+  let subTasks = [];
+  if (Array.isArray(task.subTasks)) {
+    subTasks = task.subTasks;
+  }
 
-  const checklistHTML =
-    subTasks.length > 0
-      ? `
-        <div class="task-subtasks-wrapper">
-          <button
-            type="button"
-            class="btn-ghost btn-expand-subtasks"
-            aria-expanded="false"
-            aria-label="Toggle subtasks"
-          >
-            <span>Steps</span>
-            <i class="hn hn-angle-down-solid expand-icon"></i>
-          </button>
-          <div class="checklist-container">
-            ${subTasks
-              .map(
-                (subtask) => `
-                <div class="checklist-item ${subtask.completed ? "checked" : ""}" data-task-id="${task.id}" data-subtask-id="${subtask.id}">
-                  <span class="subtask-checkbox">
-                    <i class="hn hn-check-solid"></i>
-                  </span>
-                  <span class="subtask-label">${subtask.description}</span>
-                </div>
-              `,
-              )
-              .join("")}
-          </div>
+  // Build checklist HTML if subtasks exist
+  let checklistHTML = "";
+  if (subTasks.length > 0) {
+    let subtasksItemsHTML = "";
+
+    subTasks.forEach((subtask) => {
+      let isCheckedClass = "";
+      if (subtask.completed) {
+        isCheckedClass = "checked";
+      }
+
+      subtasksItemsHTML += `
+        <div class="checklist-item ${isCheckedClass}" data-task-id="${task.id}" data-subtask-id="${subtask.id}">
+          <span class="subtask-checkbox">
+            <i class="hn hn-check-solid"></i>
+          </span>
+          <span class="subtask-label">${subtask.description}</span>
         </div>
-      `
-      : "";
+      `;
+    });
+
+    checklistHTML = `
+      <div class="task-subtasks-wrapper">
+        <button
+          type="button"
+          class="btn-ghost btn-expand-subtasks"
+          aria-expanded="false"
+          aria-label="Toggle subtasks"
+        >
+          <span>Steps</span>
+          <i class="hn hn-angle-down-solid expand-icon"></i>
+        </button>
+        <div class="checklist-container">
+          ${subtasksItemsHTML}
+        </div>
+      </div>
+    `;
+  }
+
+  let priorityClass = "medium";
+  if (task.priority) {
+    priorityClass = task.priority.toLowerCase();
+  }
 
   return `
     <article class="task-card-item" data-id="${task.id}" draggable="true">
@@ -63,7 +79,7 @@ export function createTaskCardHTML(task, projectManager) {
       <footer class="card-footer">
         <div class="footer-left">
           <span class="user-avatar">MP</span>
-          <span class="priority-badge badge-${task.priority.toLowerCase()}">
+          <span class="priority-badge badge-${priorityClass}">
             <i class="hn hn-flag-solid"></i>${task.priority}
           </span>
         </div>
