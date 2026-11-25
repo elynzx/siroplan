@@ -1,6 +1,13 @@
 const POMODORO_STORAGE_KEY = "siro_pomodoro_state";
 
-export function initPomodoroWidget() {
+/**
+ * Initializes and manages the Pomodoro Timer functionality inside the Sidebar,
+ * handling countdown intervals, mode switching, star ratings, and local storage state.
+ *
+ * @returns {void}
+ */
+export function initPomodoroTimer() {
+
   const modeTabs = document.querySelectorAll(".pomodoro-container .timer-option p");
   const timeDisplay = document.querySelector(".pomodoro-container .time");
   const statusDisplay = document.querySelector(".pomodoro-container .timer-status");
@@ -12,43 +19,61 @@ export function initPomodoroWidget() {
 
   if (!modeTabs.length || !timeDisplay) return;
 
+  // Timer Configuration (in seconds)
   const DURATIONS = {
     Pomodoro: 25 * 60,
     "Short Break": 5 * 60,
     "Long Break": 15 * 60,
   };
 
+  // State Variables
   let currentMode = "Pomodoro";
   let runningMode = null;
   let completedPomodoros = 0;
+  let timerInterval = null;
+
   let remainingTimes = {
     Pomodoro: DURATIONS.Pomodoro,
     "Short Break": DURATIONS["Short Break"],
     "Long Break": DURATIONS["Long Break"],
   };
-  let timerInterval = null;
 
+  /**
+   * Persists current timer state to local storage.
+   */
   function saveToLocalStorage() {
     const state = {
-      currentMode,
-      completedPomodoros,
-      remainingTimes,
+      currentMode: currentMode,
+      completedPomodoros: completedPomodoros,
+      remainingTimes: remainingTimes,
     };
     localStorage.setItem(POMODORO_STORAGE_KEY, JSON.stringify(state));
   }
 
+  /**
+   * Restores timer state from local storage if valid data exists.
+   */
   function loadFromLocalStorage() {
     const saved = localStorage.getItem(POMODORO_STORAGE_KEY);
     if (!saved) return;
 
     try {
       const parsed = JSON.parse(saved);
+
       if (parsed.currentMode && DURATIONS[parsed.currentMode]) {
         currentMode = parsed.currentMode;
       }
+
       if (typeof parsed.completedPomodoros === "number") {
-        completedPomodoros = Math.min(Math.max(parsed.completedPomodoros, 0), 4);
+        if (parsed.completedPomodoros < 0) {
+          completedPomodoros = 0;
+        } else if (parsed.completedPomodoros > 4) {
+          completedPomodoros = 4;
+        } else {
+          completedPomodoros = parsed.completedPomodoros;
+        }
       }
+
       if (parsed.remainingTimes) {
         Object.keys(DURATIONS).forEach((mode) => {
           const val = Number(parsed.remainingTimes[mode]);
@@ -58,26 +83,46 @@ export function initPomodoroWidget() {
         });
       }
     } catch {
-      // Si hay datos corruptos en localStorage, se mantienen los valores por defecto
     }
   }
 
+  /**
+   * Formats total seconds into MM:SS display format.
+   */
   function formatTime(totalSeconds) {
     const minutes = Math.floor(totalSeconds / 60);
     const seconds = totalSeconds % 60;
-    return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
+
+    let minutesStr = String(minutes);
+    if (minutes < 10) {
+      minutesStr = "0" + minutes;
+    }
+
+    let secondsStr = String(seconds);
+    if (seconds < 10) {
+      secondsStr = "0" + seconds;
+    }
+
+    return `${minutesStr}:${secondsStr}`;
   }
 
+  /**
+   * Updates state and attributes for control buttons and mode tabs.
+   */
   function updateControlsUI() {
     const isRunningHere = runningMode === currentMode;
-    const isPausedMidway =
-      !isRunningHere && remainingTimes[currentMode] < DURATIONS[currentMode];
-    const isAtInitialTime =
-      !isRunningHere && remainingTimes[currentMode] === DURATIONS[currentMode];
+    const currentRemaining = remainingTimes[currentMode];
+    const initialDuration = DURATIONS[currentMode];
+
+    const isPausedMidway = !isRunningHere && currentRemaining < initialDuration;
+    const isAtInitialTime = !isRunningHere && currentRemaining === initialDuration;
 
     if (btnStart) {
       btnStart.disabled = isRunningHere;
-      const startLabel = isPausedMidway ? "Resume" : "Start";
+      let startLabel = "Start";
+      if (isPausedMidway) {
+        startLabel = "Resume";
+      }
       btnStart.innerHTML = `<i class="hn hn-play-solid"></i>${startLabel}`;
     }
 
@@ -91,8 +136,11 @@ export function initPomodoroWidget() {
 
     modeTabs.forEach((tab) => {
       const tabMode = tab.textContent.trim();
-      tab.classList.toggle("active", tabMode === currentMode);
-      tab.classList.toggle("is-running", tabMode === runningMode);
+      const isActive = tabMode === currentMode;
+      const isRunning = tabMode === runningMode;
+
+      tab.classList.toggle("active", isActive);
+      tab.classList.toggle("is-running", isRunning);
     });
   }
 
@@ -100,8 +148,11 @@ export function initPomodoroWidget() {
     if (!statusDisplay) return;
 
     if (runningMode === currentMode) {
-      statusDisplay.textContent =
-        currentMode === "Pomodoro" ? "Focusing with Siro..." : "Resting...";
+      if (currentMode === "Pomodoro") {
+        statusDisplay.textContent = "Focusing with Siro...";
+      } else {
+        statusDisplay.textContent = "Resting...";
+      }
       return;
     }
 
@@ -122,6 +173,9 @@ export function initPomodoroWidget() {
     }
   }
 
+  /**
+   * Refreshes overall timer display components.
+   */
   function updateDisplay() {
     timeDisplay.textContent = formatTime(remainingTimes[currentMode]);
     updateStatusText();
@@ -130,8 +184,10 @@ export function initPomodoroWidget() {
 
   function updateStars() {
     stars.forEach((star, index) => {
-      star.classList.toggle("is-done", index < completedPomodoros);
+      const isDone = index < completedPomodoros;
+      star.classList.toggle("is-done", isDone);
     });
+
     if (logCount) {
       logCount.textContent = `${completedPomodoros}/4`;
     }
@@ -145,11 +201,21 @@ export function initPomodoroWidget() {
     runningMode = null;
   }
 
+  /**
+   * Changes current timer mode and refreshes view.
+   *
+   * @param {string} newMode - Target timer mode name.
+   */
   function switchMode(newMode) {
     currentMode = newMode;
     updateDisplay();
   }
 
+  /**
+   * Handles sequence when a timer cycle completes.
+   *
+   * @param {string} finishedMode - Mode that just completed.
+   */
   function handleTimerComplete(finishedMode) {
     stopTimer();
     remainingTimes[finishedMode] = DURATIONS[finishedMode];
@@ -174,6 +240,9 @@ export function initPomodoroWidget() {
     saveToLocalStorage();
   }
 
+  /**
+   * Starts or resumes countdown interval.
+   */
   function startTimer() {
     if (timerInterval !== null && runningMode === currentMode) return;
 
