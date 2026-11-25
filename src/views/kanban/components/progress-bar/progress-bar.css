@@ -56,7 +56,7 @@
   width: 100%;
   background-color: var(--color-surface);
   border: var(--border-main);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-sm);
   height: 26px;
   position: relative;
   overflow: hidden;

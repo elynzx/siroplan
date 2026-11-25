@@ -19,7 +19,7 @@
 
 .modal-task-grid {
   display: grid;
-  grid-template-columns: 1.10fr 0.90fr;
+  grid-template-columns: 1.1fr 0.9fr;
   gap: 45px;
   align-items: stretch;
   flex: 1;
@@ -36,7 +36,7 @@
 
 .modal-col-details {
   background-color: var(--color-primary);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-sm);
   padding: 22px 24px;
 }
 
@@ -357,7 +357,7 @@
     height: auto;
     min-height: auto;
     max-height: 90dvh;
-    border-radius: var(--radius-md) var(--radius-md) 12px 12px;
+    border-radius: var(--radius-sm) var(--radius-sm) 12px 12px;
   }
 
   .modal-task-grid {
