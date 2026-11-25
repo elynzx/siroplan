@@ -22,103 +22,208 @@
 
     <link href="./src/css/styles.css" rel="stylesheet">
 
-    <script type="module" src="./src/js/main.js"></script>
+    <script type="module" src="./src/main.js"></script>
 </head>
 
 <body class="app-layout">
 
+    <div id="splashScreen" class="splash-screen" role="status" aria-label="Loading Siro Plan">
+        <div class="splash-content">
+            <div class="splash-mascot-wrapper">
+                <span class="splash-sparkle sparkle-1">✦</span>
+                <span class="splash-sparkle sparkle-2">✧</span>
+                <span class="splash-sparkle sparkle-3">✦</span>
+                <div class="splash-mascot">
+                    <img src="./src/assets/siro-blinking-1.png" alt="Siro Mascot" class="frame-1">
+                    <img src="./src/assets/siro-blinking-2.png" alt="Siro Mascot" class="frame-2">
+                </div>
+            </div>
 
-    <aside class="sidebar-aside">
+            <div class="splash-brand">
+                <h1 class="splash-title">Siro Plan</h1>
+            </div>
+
+            <div class="splash-loader">
+                <div class="splash-loader-track">
+                    <div class="splash-loader-fill"></div>
+                </div>
+                <p class="splash-status">Preparing your cozy space...</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="sidebarBackdrop" class="sidebar-backdrop" aria-hidden="true"></div>
+
+    <aside class="sidebar-aside" id="sidebarAside">
 
         <header class="sidebar-header">
-            <div class="logo-cat-icon">
-                <span></span>
-            </div>
-            <div class="logo-text">
-                <h2 class="title">Welcome</h2>
-                <span class="logo-subtitle">Make time feel lighter</span>
+            <div class="user-container">
+                <div class="user-greeting">
+                    <img class="avatar" src="src/assets/avatar-profile.png" alt="User avatar">
+                    <div class="user-info">
+                        <p class="user-welcome">Welcome Back</p>
+                        <p class="user-text">Elynzx</p>
+                    </div>
+                </div>
+                <button class="logout-box" type="button" title="Logout" aria-label="Logout">
+                    <i class="hn hn-logout-solid"></i>
+                </button>
             </div>
         </header>
 
-        <section class="calendar-widget">
-        </section>
+        <main class="sidebar-main">
+            <section class="menu-container">
+                <nav class="sidebar-menu" aria-label="Main Navigation">
+                    <a href="#dashboard" class="menu-item">
+                        <span class="menu-icon"><i class="hn hn-command"></i></span>
+                        <span class="menu-label">Dashboard</span>
+                        <i class='bx bx-chevron-right menu-arrow'></i>
+                    </a>
+                    <a href="#projects" class="menu-item">
+                        <span class="menu-icon"><i class="hn hn-sparkles"></i></span>
+                        <span class="menu-label">Projects</span>
+                        <i class='bx bx-chevron-right menu-arrow'></i>
+                    </a>
+                    <a href="#kanban" class="menu-item active">
+                        <span class="menu-icon"><i class="hn hn-box-heart-solid"></i></span>
+                        <span class="menu-label">Kanban Board</span>
+                        <i class='bx bx-chevron-right menu-arrow'></i>
+                    </a>
+                </nav>
+            </section>
 
-        <section class="pomodoro-container">
-            <p>Focus Buddy</p>
-            <h3>Pomodoro Timer</h3>
-
-            <div class="timer-container">
-                <img class="timer-img">
-                <div class="timer-option">
-                    <p>Pomodoro</p>
-                    <p>Short Break</p>
-                    <p>Long Break</p>
+            <section class="pomodoro-container">
+                <div class="pomodoro-header">
+                    <h3 class="pomodoro-title">Siro Focus Space</h3>
+                    <p class="pomodoro-tag">Mindful Flow</p>
                 </div>
-                <div class="timer-display">
-                    <p class="time">25:00</p>
-                    <p>Ready when you are</p>
-                </div>
 
-                <div class="timer-footer">
-                    <div class="timer-footer-actions">
-                        <button class="btn btn-timer"><i class="hn hn-play-solid"></i>Start</button>
-                        <button class="btn btn-timer"><i class="hn hn-pause-solid"></i> Pause</button>
-                        <button class="btn btn-timer"><i class="hn hn-refresh-solid"></i></button>
+                <div class="timer-container">
+                    <div class="timer-option">
+                        <p class="active">Pomodoro</p>
+                        <p>Short Break</p>
+                        <p>Long Break</p>
                     </div>
-                    <div class="timer-footer-log">
-                        <p>Today</p>
-                        <div class="timer-log-activity">
-                            <i class="hn hn-star-solid"></i>
-                            <i class="hn hn-star-solid"></i>
-                            <i class="hn hn-star-solid"></i>
-                            <i class="hn hn-star-solid"></i>
+
+                    <div class="timer-centerpiece">
+                        <div class="pomodoro-mascot">
+                            <img src="./src/assets/siro-blinking-1.png" alt="Siro Focus Buddy" class="frame-1">
+                            <img src="./src/assets/siro-blinking-2.png" alt="Siro Focus Buddy" class="frame-2">
                         </div>
-                        <p>3/4</p>
+                        <div class="timer-display">
+                            <p class="time"></p>
+                            <p class="timer-status">Ready when you are</p>
+                        </div>
+                    </div>
+
+                    <div class="timer-footer">
+                        <div class="timer-footer-actions">
+                            <button id="btnStartTimer" class="btn btn-primary btn-timer"><i
+                                    class="hn hn-play-solid"></i>Start</button>
+                            <button id="btnPauseTimer" class="btn btn-secondary btn-timer"><i
+                                    class="hn hn-pause-solid"></i>Pause</button>
+                            <button id="btnResetTimer" class="btn btn-small btn-timer-reset" aria-label="Reset timer"><i
+                                    class="hn hn-refresh-solid"></i></button>
+                        </div>
+                        <div class="timer-footer-log">
+                            <p class="log-label">Today : </p>
+                            <div class="timer-log-activity">
+                                <i class="hn hn-star-solid"></i>
+                                <i class="hn hn-star-solid"></i>
+                                <i class="hn hn-star-solid"></i>
+                                <i class="hn hn-star-solid"></i>
+                            </div>
+                            <p class="log-count"></p>
+                        </div>
                     </div>
                 </div>
-            </div>
-
-
-        </section>
+            </section>
+        </main>
 
         <footer class="sidebar-footer">
-            <span class="footer-icon"></span>
-            <p class="footer-text">One little task at a time.</p>
-            <p> You're doing purrfectly!</p>
+            <div class="footer-cozy-row">
+                <div class="siro-footer-box">
+                    <img src="./src/assets/siro-idle.png" alt="Siro Mascot" class="siro-footer-img">
+                </div>
+                <div class="footer-message">
+                    <p class="footer-text">One little task at a time.</p>
+                    <p class="footer-subtext">You're doing purrfectly!</p>
+                </div>
+            </div>
+            <div class="footer-credits">
+                <a href="https://github.com/elynzx" target="_blank" rel="noopener noreferrer" class="footer-credit-link"
+                    title="Elynzx GitHub Profile">
+                    <i class='bx bxl-github'></i>
+                    <span>Creator @elynzx</span>
+                </a>
+            </div>
         </footer>
+
     </aside>
 
     <main class="view-container">
 
+        <div class="mobile-topbar">
+            <button type="button" id="btnOpenSidebar" class="btn btn-small mobile-menu-btn" aria-label="Open menu">
+                <i class="hn hn-grid-solid"></i>
+            </button>
+            <span class="mobile-app-title">Siro Plan</span>
+            <button type="button" id="btnMobilePomodoro" class="btn btn-small mobile-pomo-btn" title="Open Focus Buddy"
+                aria-label="Open Focus Buddy">
+                <i class="hn hn-star-solid"></i>
+            </button>
+        </div>
+
         <div class="board-container">
 
-            <section class="banner-container">
-                <div class="progress-bar">
-                    <i class='bx bx-calendar-star bx-sm'></i>
-                    <p>Keep it up!</p>
-                    <div class="progress-bar-container">
-                        <div class="progress-bar-fill"></div>
-                        <span class="progress-text">1/2 tasks done</span>
+            <header class="board-header">
+                <div class="board-brand">
+                    <div class="brand-text">
+                        <h1 class="title">Siro Plan - Project management</h1>
+                        <p class="subtitle">A little list for a lovely, productive day.</p>
+                    </div>
+
+                    <div class="header-progress-group">
+                        <div class="siro-pointing-container">
+                            <img src="./src/assets/siro-pointing-1.png" alt="Siro señalando" class="frame-1">
+                            <img src="./src/assets/siro-pointing-2.png" alt="Siro señalando" class="frame-2">
+                        </div>
+                        <div class="progress-bar">
+                            <div class="siro-speech-bubble">
+                                <i class='bx bx-calendar-star'></i>
+                                <span class="progress-label">Keep it up! You got this!</span>
+                            </div>
+                            <div class="progress-bar-container">
+                                <div class="progress-bar-fill"></div>
+                                <span class="progress-text">1/2 tasks done</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
-
-
-                <button id="btnTask" class="btn btn-primary btn-task">
-                    <i class='bx bxs-plus-circle'></i> New Task
-                </button>
-            </section>
+            </header>
 
             <div class="projects-container">
 
                 <section class="projects-section">
-                    <div class="tabs-wrapper">
+                    <div class="projects-tabs-bar">
+                        <div class="tabs-wrapper">
+                        </div>
+                        <button id="btnProject" class="btn btn-small btn-add-project" title="Create new project"
+                            aria-label="Create new project">
+                            <i class="hn hn-plus-solid"></i>
+                        </button>
                     </div>
-                    <button id="btnProject" class="btn btn-project">
-                        <i class='bx bxs-plus-circle'></i> New Project
+                    <button id="btnTask" class="btn btn-primary btn-task">
+                        <i class="hn hn-plus-solid"></i> New Task
                     </button>
                 </section>
 
                 <section class="kanban-section">
+                    <div class="kanban-mobile-toolbar">
+                        <button id="btnTaskMobile" class="btn btn-primary btn-task-mobile">
+                            <i class="hn hn-plus-solid"></i> New Task
+                        </button>
+                    </div>
                     <div class="kanban-board-layout">
                         <div class="kanban-column" id="column-todo" data-status="To Do">
                             <div class="column-header status-todo">
@@ -143,7 +248,7 @@
                         </div>
 
                         <div class="kanban-column" id="column-inreview" data-status="In Review">
-                            <div class="column-header status-done">
+                            <div class="column-header status-inreview">
                                 <span class="status-dot"></span>
                                 <h3>In review</h3>
                                 <span class="tasks-count-badge"></span>
@@ -164,12 +269,10 @@
                             </div>
                         </div>
                     </div>
-
                 </section>
+
             </div>
-
         </div>
-
     </main>
 
 </body>
