@@ -79,8 +79,6 @@
 }
 
 .btn-add-project {
-  width: 34px;
-  height: 34px;
   margin-bottom: 6px;
   border-radius: 10px;
   border: var(--border-dashed);

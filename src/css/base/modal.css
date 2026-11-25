@@ -15,7 +15,7 @@
 .modal-card {
   background-color: var(--color-bg);
   border: var(--border-main);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-sm);
   padding: 42px;
   position: relative;
   width: 100%;
@@ -150,7 +150,7 @@
     max-width: 100%;
     min-height: auto;
     max-height: 90dvh;
-    border-radius: var(--radius-md) var(--radius-md) 12px 12px;
+    border-radius: var(--radius-sm) var(--radius-sm) 12px 12px;
   }
 
   .modal-header {

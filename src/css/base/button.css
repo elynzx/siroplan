@@ -4,7 +4,7 @@
   font-size: 14px;
   height: 38px;
   padding: 0 18px;
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-sm);
   cursor: pointer;
   display: inline-flex;
   align-items: center;
