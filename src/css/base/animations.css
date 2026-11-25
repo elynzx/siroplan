@@ -1,0 +1,53 @@
+@keyframes cuteFloat {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-3px);
+  }
+}
+
+@keyframes cuteBounce {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-3px) rotate(8deg);
+  }
+}
+
+@keyframes cutePulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.07);
+  }
+}
+
+@keyframes catBlinkFrame1 {
+  0%,
+  60%,
+  100% {
+    opacity: 1;
+  }
+  65%,
+  90% {
+    opacity: 0;
+  }
+}
+
+@keyframes catBlinkFrame2 {
+  0%,
+  60%,
+  100% {
+    opacity: 0;
+  }
+  65%,
+  90% {
+    opacity: 1;
+  }
+}
