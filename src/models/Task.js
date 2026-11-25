@@ -1,4 +1,5 @@
 import { SubTask } from "./SubTask.js";
+
 export class Task {
   constructor(
     id,
@@ -26,6 +27,8 @@ export class Task {
 
   addSubtask(description, completed = false) {
     const newSubtask = new SubTask(description, completed);
-    this.subTasks.push()
+    this.subTasks.push(newSubtask);
+    this.updatedAt = new Date().toISOString();
+    return newSubtask;
   }
 }

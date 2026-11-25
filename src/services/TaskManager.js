@@ -1,4 +1,5 @@
 import { Task } from "../models/Task.js";
+import { SubTask } from "../models/SubTask.js";
 
 export class TaskManager {
   constructor() {
@@ -14,8 +15,8 @@ export class TaskManager {
     deadline,
     priority,
     status,
-    subTasks,
-    updatedAt,
+    subTasks = [],
+    updatedAt
   ) {
     const newTask = new Task(
       this.taskId,
@@ -27,7 +28,7 @@ export class TaskManager {
       priority,
       status,
       subTasks,
-      updatedAt,
+      updatedAt
     );
 
     this.taskList.push(newTask);
@@ -36,7 +37,9 @@ export class TaskManager {
     return newTask;
   }
 
-  addSubtask() {}
+  getTaskById(taskId) {
+    return this.taskList.find((task) => task.id === Number(taskId));
+  }
 
   getAllTasks() {
     return this.taskList;
@@ -46,34 +49,19 @@ export class TaskManager {
     return this.taskList.filter((task) => task.status === status);
   }
 
-  deleteTask(taskId) {
-    this.taskList = this.taskList.filter(
-      (task) => task.id !== parseInt(taskId),
+  getTasksWithProject(projectId) {
+    return this.taskList.filter(
+      (task) => Number(task.project) === Number(projectId)
     );
-    this.saveToLocalStorage();
   }
 
-  updateTask(taskId, newStatus) {
-    const task = this.taskList.find((task) => task.id === parseInt(taskId));
+  updateTaskStatus(taskId, newStatus) {
+    const task = this.getTaskById(taskId);
     if (task) {
       task.status = newStatus;
       task.updatedAt = new Date().toISOString();
       this.saveToLocalStorage();
     }
-  }
-
-  assignTask(taskId, assignee) {
-    const task = this.taskList.find((task) => task.id === parseInt(taskId));
-    if (task) {
-      task.assignee = assignee;
-      this.saveToLocalStorage();
-    }
-  }
-
-  getTasksWithProject(projectId) {
-    return this.taskList.filter(
-      (task) => task.projectId === parseInt(projectId),
-    );
   }
 
   updateTaskData(
@@ -85,19 +73,60 @@ export class TaskManager {
     newDeadline,
     newPriority,
     newStatus,
-    newSubTasks,
+    newSubTasks
   ) {
-    const task = this.taskList.find((task) => task.id === parseInt(taskId));
-
+    const task = this.getTaskById(taskId);
     if (task) {
       task.title = newTitle || task.title;
       task.description = newDescription || task.description;
-      task.projectId = newProjectId || task.projectId;
+      task.project = newProjectId || task.project;
       task.assignee = newAssignee || task.assignee;
       task.deadline = newDeadline || task.deadline;
       task.priority = newPriority || task.priority;
       task.status = newStatus || task.status;
       task.subTasks = newSubTasks || task.subTasks;
+      task.updatedAt = new Date().toISOString();
+      this.saveToLocalStorage();
+    }
+  }
+
+  deleteTask(taskId) {
+    this.taskList = this.taskList.filter((task) => task.id !== Number(taskId));
+    this.saveToLocalStorage();
+  }
+
+  /* SubTasks */
+  addSubtask(taskId, description, completed = false) {
+    const task = this.getTaskById(taskId);
+    if (task && description && description.trim() !== "") {
+      if (!Array.isArray(task.subTasks)) {
+        task.subTasks = [];
+      }
+      const newSubtask = new SubTask(description.trim(), Boolean(completed));
+      task.subTasks.push(newSubtask);
+      this.saveToLocalStorage();
+      return newSubtask;
+    }
+    return null;
+  }
+
+  toggleSubtask(taskId, subtaskId) {
+    const task = this.getTaskById(taskId);
+    if (task && Array.isArray(task.subTasks)) {
+      const subtask = task.subTasks.find((st) => st.id === subtaskId);
+      if (subtask) {
+        subtask.completed = !subtask.completed;
+        this.saveToLocalStorage();
+        return subtask;
+      }
+    }
+    return null;
+  }
+
+  deleteSubtask(taskId, subtaskId) {
+    const task = this.getTaskById(taskId);
+    if (task && Array.isArray(task.subTasks)) {
+      task.subTasks = task.subTasks.filter((st) => st.id !== subtaskId);
       this.saveToLocalStorage();
     }
   }

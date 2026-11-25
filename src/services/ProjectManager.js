@@ -4,6 +4,7 @@ export class ProjectManager {
   constructor() {
     this.projectList = [];
     this.projectId = 1;
+    this.activeProjectId = "all";
   }
 
   addProject(title) {
@@ -14,20 +15,37 @@ export class ProjectManager {
     return newProject;
   }
 
+  getProjectById(projectId) {
+    return this.projectList.find((project) => project.id === Number(projectId));
+  }
+
   getAllProjects() {
     return this.projectList;
   }
 
-  getProjectById(projectId) {
-    return this.projectList.find(
-      (project) => project.id === parseInt(projectId),
-    );
+  setActiveProject(projectId) {
+    this.activeProjectId = String(projectId);
+  }
+
+  getActiveProject() {
+    return this.activeProjectId;
+  }
+
+  updateProject(projectId, newTitle) {
+    const project = this.getProjectById(projectId);
+    if (project && newTitle && newTitle.trim() !== "") {
+      project.title = newTitle.trim();
+      this.saveToLocalStorage();
+    }
   }
 
   deleteProject(projectId) {
     this.projectList = this.projectList.filter(
-      (project) => project.id !== parseInt(projectId),
+      (project) => project.id !== Number(projectId),
     );
+    if (String(this.activeProjectId) === String(projectId)) {
+      this.activeProjectId = "all";
+    }
     this.saveToLocalStorage();
   }
 
