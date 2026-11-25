@@ -1,29 +1,48 @@
+/**
+ * Calculates task progress for the current project (or all projects) and updates
+ * the progress bar UI elements, including fill percentage, text counter, and dynamic label.
+ *
+ * @param {Object} taskManager - The TaskManager instance.
+ * @param {Object} projectManager - The ProjectManager instance.
+ * @returns {void}
+ */
 export function renderProgressBar(taskManager, projectManager) {
   const progressText = document.querySelector(".progress-text");
   const progressFill = document.querySelector(".progress-bar-fill");
   const progressLabel = document.querySelector(".progress-label");
+
   if (!progressText || !progressFill) return;
 
-  const activeProjectId =
-    projectManager && typeof projectManager.getActiveProject === "function"
-      ? projectManager.getActiveProject()
-      : "all";
+  const activeProjectId = projectManager.getActiveProject();
 
-  const tasks =
-    activeProjectId === "all"
-      ? taskManager.getAllTasks()
-      : taskManager.getTasksWithProject(activeProjectId);
+  // Filter tasks based on the active project
+  let tasks = [];
+  if (activeProjectId === "all") {
+    tasks = taskManager.getAllTasks();
+  } else {
+    tasks = taskManager.getTasksWithProject(activeProjectId);
+  }
 
+  // Calculate completed tasks and progress percentage
   const totalCount = tasks.length;
-  const doneCount = tasks.filter(
-    (task) => String(task.status || "").toLowerCase() === "done",
-  ).length;
-  const percentage =
-    totalCount > 0 ? Math.round((doneCount / totalCount) * 100) : 0;
+  const doneTasks = tasks.filter((task) => {
+    let taskStatus = "";
+    if (task.status) {
+      taskStatus = task.status.toLowerCase();
+    }
+    return taskStatus === "done";
+  });
+  const doneCount = doneTasks.length;
+
+  let percentage = 0;
+  if (totalCount > 0) {
+    percentage = Math.round((doneCount / totalCount) * 100);
+  }
 
   progressText.textContent = `${doneCount}/${totalCount} tasks done`;
   progressFill.style.width = `${percentage}%`;
 
+  // Update dynamic messages
   if (progressLabel) {
     if (totalCount === 0) {
       progressLabel.textContent = "Let's add our first little goal!";
