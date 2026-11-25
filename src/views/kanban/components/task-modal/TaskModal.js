@@ -1,36 +1,57 @@
 import { validateTaskForm } from "../../../../utils/validation.js";
 import { renderKanbanView } from "../../KanbanView.js";
+import {
+  initProjectDropdown,
+  setSelectedProject,
+} from "./components/ProjectDropdown.js";
+import {
+  initPriorityBadges,
+  setSelectedPriority,
+} from "./components/PriorityBadges.js";
+import { initSubtaskChecklist } from "./components/SubtaskChecklist.js";
 
 function createTaskModalHTML(projectManager, initialProjectId = "") {
   const projects = projectManager.getAllProjects();
-  const selectedProject =
-    projects.find((p) => String(p.id) === String(initialProjectId)) ||
-    projects[0] ||
-    null;
 
-  const selectedValue = selectedProject ? selectedProject.id : "";
-  const selectedLabel = selectedProject
-    ? selectedProject.title
-    : "No projects available";
+  // Find initial project
+  let selectedProject = projects.find(
+    (project) => String(project.id) === String(initialProjectId),
+  );
+  if (!selectedProject && projects.length > 0) {
+    selectedProject = projects[0];
+  }
 
-  const projectMenuItemsHTML =
-    projects.length > 0
-      ? projects
-          .map(
-            (project) => `
+  let selectedValue = "";
+  let selectedLabel = "No projects available";
+
+  if (selectedProject) {
+    selectedValue = selectedProject.id;
+    selectedLabel = selectedProject.title;
+  }
+
+  let projectMenuItemsHTML = "";
+  if (projects.length > 0) {
+    projectMenuItemsHTML = projects
+      .map((project) => {
+        const isActive =
+          String(project.id) === String(selectedValue) ? "is-active" : "";
+        return `
           <button
             type="button"
-            class="modal-project-option ${String(project.id) === String(selectedValue) ? "is-active" : ""}"
+            class="modal-project-option ${isActive}"
             data-project-id="${project.id}"
-            data-project-title="${project.title.replace(/"/g, "&quot;")}"
           >
             <span class="modal-option-title">${project.title}</span>
             <i class="hn hn-check-solid modal-option-check"></i>
           </button>
-        `,
-          )
-          .join("")
-      : `<div class="modal-project-empty">Create a project first in the board</div>`;
+        `;
+      })
+      .join("");
+  } else {
+    projectMenuItemsHTML = `<div class="modal-project-empty">Create a project first in the board</div>`;
+  }
+
+  const disabledClass = projects.length === 0 ? "is-disabled" : "";
 
   return `
     <div class="modal-overlay">
@@ -81,12 +102,7 @@ function createTaskModalHTML(projectManager, initialProjectId = "") {
                             <label>Project</label>
                             <input type="hidden" id="task-project" value="${selectedValue}">
                             <div class="modal-project-dropdown" id="modalProjectDropdown">
-                                <button
-                                  type="button"
-                                  id="modalProjectBtn"
-                                  class="modal-project-trigger ${projects.length === 0 ? "is-disabled" : ""}"
-                                  aria-expanded="false"
-                                >
+                                <button type="button" id="modalProjectBtn" class="modal-project-trigger ${disabledClass}">
                                     <span id="modalProjectLabel" class="modal-project-label">${selectedLabel}</span>
                                     <i class="hn hn-angle-down-solid dropdown-chevron"></i>
                                 </button>
@@ -140,6 +156,14 @@ function createTaskModalHTML(projectManager, initialProjectId = "") {
   `;
 }
 
+/**
+ * Creates, populates, and attaches event listeners to the Task Modal for creation or editing.
+ *
+ * @param {Object} taskManager - The TaskManager instance.
+ * @param {Object} projectManager - The ProjectManager instance.
+ * @param {Object|null} [taskToEdit=null] - The optional task object to populate when editing.
+ * @returns {void}
+ */
 export function renderTaskModal(
   taskManager,
   projectManager,
@@ -148,16 +172,15 @@ export function renderTaskModal(
   const modalContainer = document.createElement("div");
   modalContainer.id = "taskModal";
 
-  const activeProjectId =
-    projectManager && typeof projectManager.getActiveProject === "function"
-      ? projectManager.getActiveProject()
-      : "all";
+  // Determine initial project selection
+  const activeProjectId = projectManager.getActiveProject();
+  let initialProjectId = "";
 
-  const initialProjectId = taskToEdit
-    ? taskToEdit.project
-    : activeProjectId !== "all"
-      ? activeProjectId
-      : "";
+  if (taskToEdit) {
+    initialProjectId = taskToEdit.project;
+  } else if (activeProjectId !== "all") {
+    initialProjectId = activeProjectId;
+  }
 
   modalContainer.innerHTML = createTaskModalHTML(
     projectManager,
@@ -165,228 +188,49 @@ export function renderTaskModal(
   );
   document.body.appendChild(modalContainer);
 
-  const pendingSubtasks =
-    taskToEdit && Array.isArray(taskToEdit.subTasks)
-      ? taskToEdit.subTasks.map((st) => ({
-          id: st.id || crypto.randomUUID(),
-          description: st.description,
-          completed: Boolean(st.completed),
-        }))
-      : [];
+  // Initialize submodules
+  initProjectDropdown(modalContainer, projectManager);
+  initPriorityBadges(modalContainer);
 
+  const existingSubtasks =
+    taskToEdit && taskToEdit.subTasks ? taskToEdit.subTasks : [];
+  const getFinalSubtasks = initSubtaskChecklist(
+    modalContainer,
+    existingSubtasks,
+  );
+
+  // Input references
   const titleInput = document.getElementById("task-title");
-  const inputSubtask = document.getElementById("inputSubtask");
-  const btnAddSubtask = document.getElementById("btnAddSubtask");
-  const subtasksPreviewList = document.getElementById("subtasksPreviewList");
-  const subtaskCounterBadge = document.getElementById("subtaskCounterBadge");
-  const priorityInput = document.getElementById("task-priority");
+  const descInput = document.getElementById("task-desc");
+  const assigneeInput = document.getElementById("task-assignee");
+  const dateInput = document.getElementById("task-date");
   const projectInput = document.getElementById("task-project");
-  const modalProjectBtn = document.getElementById("modalProjectBtn");
-  const modalProjectMenu = document.getElementById("modalProjectMenu");
-  const modalProjectLabel = document.getElementById("modalProjectLabel");
+  const priorityInput = document.getElementById("task-priority");
 
-  const setProjectSelection = (projectId) => {
-    const project = projectManager.getProjectById(projectId);
-    if (!project) return;
-    projectInput.value = project.id;
-    if (modalProjectLabel) {
-      modalProjectLabel.textContent = project.title;
-    }
-    modalContainer
-      .querySelectorAll(".modal-project-option")
-      .forEach((optBtn) => {
-        optBtn.classList.toggle(
-          "is-active",
-          String(optBtn.dataset.projectId) === String(project.id),
-        );
-      });
-  };
-
-  if (modalProjectBtn && modalProjectMenu) {
-    modalProjectBtn.addEventListener("click", (event) => {
-      event.stopPropagation();
-      if (modalProjectBtn.classList.contains("is-disabled")) return;
-      const isOpen = modalProjectMenu.classList.toggle("is-open");
-      modalProjectBtn.classList.toggle("is-open", isOpen);
-      modalProjectBtn.setAttribute("aria-expanded", String(isOpen));
-    });
-
-    modalProjectMenu
-      .querySelectorAll(".modal-project-option")
-      .forEach((optBtn) => {
-        optBtn.addEventListener("click", (event) => {
-          event.stopPropagation();
-          setProjectSelection(optBtn.dataset.projectId);
-          modalProjectMenu.classList.remove("is-open");
-          modalProjectBtn.classList.remove("is-open");
-          modalProjectBtn.setAttribute("aria-expanded", "false");
-        });
-      });
-
-    modalContainer.addEventListener("click", (event) => {
-      if (!event.target.closest("#modalProjectDropdown")) {
-        modalProjectMenu.classList.remove("is-open");
-        modalProjectBtn.classList.remove("is-open");
-        modalProjectBtn.setAttribute("aria-expanded", "false");
-      }
-    });
-  }
-
-  const setPrioritySelection = (priorityVal) => {
-    priorityInput.value = priorityVal;
-    modalContainer
-      .querySelectorAll("#priorityBadgesGroup .modal-choice-badge")
-      .forEach((btn) => {
-        btn.classList.toggle("active", btn.dataset.priority === priorityVal);
-      });
-  };
-
-  modalContainer
-    .querySelectorAll("#priorityBadgesGroup .modal-choice-badge")
-    .forEach((btn) => {
-      btn.addEventListener("click", () => {
-        setPrioritySelection(btn.dataset.priority);
-      });
-    });
-
-  const renderPendingSubtasks = () => {
-    if (!subtasksPreviewList) return;
-    if (subtaskCounterBadge) {
-      const count = pendingSubtasks.length;
-      subtaskCounterBadge.textContent = `${count} ${count === 1 ? "step" : "steps"}`;
-    }
-
-    subtasksPreviewList.innerHTML = pendingSubtasks
-      .map(
-        (subtask, index) => `
-          <div class="modal-subtask-item ${subtask.completed ? "checked" : ""}" data-index="${index}">
-            <button
-              type="button"
-              class="subtask-checkbox modal-subtask-toggle"
-              data-index="${index}"
-              aria-label="Toggle subtask completion"
-            >
-              <i class="hn hn-check-solid"></i>
-            </button>
-            <input
-              type="text"
-              class="modal-subtask-input"
-              data-index="${index}"
-              value="${subtask.description.replace(/"/g, "&quot;")}"
-              ${subtask.completed ? "disabled readonly" : ""}
-              aria-label="Edit subtask description"
-            />
-            <button type="button" class="btn btn-small btn-remove-subtask" data-index="${index}" aria-label="Remove subtask">
-              <i class="hn hn-times-solid"></i>
-            </button>
-          </div>
-        `,
-      )
-      .join("");
-
-    subtasksPreviewList
-      .querySelectorAll(".modal-subtask-toggle")
-      .forEach((toggleBtn) => {
-        toggleBtn.addEventListener("click", (e) => {
-          const idx = Number(e.currentTarget.dataset.index);
-          if (pendingSubtasks[idx]) {
-            const isCompleted = !pendingSubtasks[idx].completed;
-            pendingSubtasks[idx].completed = isCompleted;
-            const itemEl = toggleBtn.closest(".modal-subtask-item");
-            if (itemEl) {
-              itemEl.classList.toggle("checked", isCompleted);
-              const inputEl = itemEl.querySelector(".modal-subtask-input");
-              if (inputEl) {
-                inputEl.disabled = isCompleted;
-                inputEl.readOnly = isCompleted;
-                if (isCompleted) inputEl.blur();
-              }
-            }
-          }
-        });
-      });
-
-    subtasksPreviewList
-      .querySelectorAll(".modal-subtask-input")
-      .forEach((editInput) => {
-        editInput.addEventListener("input", (e) => {
-          const idx = Number(e.currentTarget.dataset.index);
-          if (!pendingSubtasks[idx] || pendingSubtasks[idx].completed) return;
-          pendingSubtasks[idx].description = e.currentTarget.value;
-        });
-
-        editInput.addEventListener("blur", (e) => {
-          const idx = Number(e.currentTarget.dataset.index);
-          if (!pendingSubtasks[idx] || pendingSubtasks[idx].completed) return;
-          const trimmed = e.currentTarget.value.trim();
-          if (!trimmed) {
-            pendingSubtasks.splice(idx, 1);
-            renderPendingSubtasks();
-          } else {
-            pendingSubtasks[idx].description = trimmed;
-            e.currentTarget.value = trimmed;
-          }
-        });
-
-        editInput.addEventListener("keydown", (e) => {
-          if (e.key === "Enter") {
-            e.preventDefault();
-            e.currentTarget.blur();
-          }
-        });
-      });
-
-    subtasksPreviewList
-      .querySelectorAll(".btn-remove-subtask")
-      .forEach((removeBtn) => {
-        removeBtn.addEventListener("click", (e) => {
-          const idx = Number(e.currentTarget.dataset.index);
-          pendingSubtasks.splice(idx, 1);
-          renderPendingSubtasks();
-        });
-      });
-  };
-
-  const handleAddSubtask = () => {
-    const description = inputSubtask.value.trim();
-    if (!description) return;
-
-    pendingSubtasks.push({
-      id: crypto.randomUUID(),
-      description,
-      completed: false,
-    });
-    inputSubtask.value = "";
-    inputSubtask.focus();
-    renderPendingSubtasks();
-  };
-
-  btnAddSubtask.addEventListener("click", handleAddSubtask);
-
-  inputSubtask.addEventListener("keydown", (event) => {
-    if (event.key === "Enter") {
-      event.preventDefault();
-      handleAddSubtask();
-    }
-  });
-
+  // Populate data if editing an existing task
   if (taskToEdit) {
-    document.querySelector("#taskModal .title").textContent = "Edit Task";
+    const modalTitle = document.querySelector("#taskModal .title");
+    if (modalTitle) {
+      modalTitle.textContent = "Edit Task";
+    }
+
     const submitBtn = document.querySelector("#formModalTask .btn-submit");
     if (submitBtn) {
       submitBtn.innerHTML = '<i class="hn hn-check-solid"></i> Save Changes';
     }
 
     titleInput.value = taskToEdit.title;
-    document.getElementById("task-desc").value = taskToEdit.description;
-    setProjectSelection(taskToEdit.project);
-    document.getElementById("task-assignee").value = taskToEdit.assignee;
-    document.getElementById("task-date").value = taskToEdit.deadline;
-    setPrioritySelection(taskToEdit.priority || "Medium");
+    descInput.value = taskToEdit.description;
+    assigneeInput.value = taskToEdit.assignee;
+    dateInput.value = taskToEdit.deadline;
+
+    setSelectedProject(modalContainer, projectManager, taskToEdit.project);
+    setSelectedPriority(modalContainer, taskToEdit.priority || "Medium");
   }
 
-  renderPendingSubtasks();
-  if (titleInput) titleInput.focus();
+  if (titleInput) {
+    titleInput.focus();
+  }
 
   const closeModal = () => modalContainer.remove();
 
@@ -395,23 +239,30 @@ export function renderTaskModal(
     .getElementById("closeTaskCancel")
     .addEventListener("click", closeModal);
 
+  // Handle form submission
   document
     .getElementById("formModalTask")
-    .addEventListener("submit", function (event) {
+    .addEventListener("submit", (event) => {
       event.preventDefault();
 
       const taskTitle = titleInput.value;
-      const taskDescription = document.getElementById("task-desc").value;
+      const taskDescription = descInput.value;
       const project = projectInput.value;
-      const taskAssignee = document.getElementById("task-assignee").value;
-      const taskDeadline = document.getElementById("task-date").value;
+      const taskAssignee = assigneeInput.value;
+      const taskDeadline = dateInput.value;
       const taskPriority = priorityInput.value;
-      const taskStatus = taskToEdit ? taskToEdit.status || "To Do" : "To Do";
 
-      modalContainer
-        .querySelectorAll(".error-message")
-        .forEach((errorMessage) => (errorMessage.textContent = ""));
+      let taskStatus = "To Do";
+      if (taskToEdit && taskToEdit.status) {
+        taskStatus = taskToEdit.status;
+      }
 
+      // Clear previous error messages
+      modalContainer.querySelectorAll(".error-message").forEach((err) => {
+        err.textContent = "";
+      });
+
+      // Validate form inputs
       const validationResult = validateTaskForm(
         taskTitle,
         taskDescription,
@@ -434,22 +285,7 @@ export function renderTaskModal(
         return;
       }
 
-      if (inputSubtask.value.trim() !== "") {
-        pendingSubtasks.push({
-          id: crypto.randomUUID(),
-          description: inputSubtask.value.trim(),
-          completed: false,
-        });
-        inputSubtask.value = "";
-      }
-
-      const validSubtasks = pendingSubtasks
-        .map((st) => ({
-          id: st.id || crypto.randomUUID(),
-          description: st.description.trim(),
-          completed: Boolean(st.completed),
-        }))
-        .filter((st) => st.description !== "");
+      const validSubtasks = getFinalSubtasks();
 
       if (taskToEdit) {
         taskManager.updateTaskData(

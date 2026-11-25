@@ -5,7 +5,7 @@
 }
 
 .modal-task {
-  max-width: 890px;
+  max-width: 900px;
   height: 75vh;
   min-height: 560px;
   display: flex;
@@ -20,7 +20,7 @@
 .modal-task-grid {
   display: grid;
   grid-template-columns: 1.10fr 0.90fr;
-  gap: 38px;
+  gap: 45px;
   align-items: stretch;
   flex: 1;
 }
