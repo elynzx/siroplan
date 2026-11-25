@@ -45,7 +45,19 @@ function createProjectModalHTML() {
   `;
 }
 
-export function renderProjectModal(projectManager, projectToEdit = null) {
+/**
+ * Creates, populates, and attaches event listeners to the Project Modal for creation or editing.
+ *
+ * @param {Object} projectManager - The ProjectManager instance.
+ * @param {Object|null} [projectToEdit=null] - The optional project object to populate when editing.
+ * @param {Function|null} [onProjectSave=null] - Optional callback function triggered after saving a project.
+ * @returns {void}
+ */
+export function renderProjectModal(
+  projectManager,
+  projectToEdit = null,
+  onProjectSave = null,
+) {
   const modalContainer = document.createElement("div");
   modalContainer.id = "projectModal";
 
@@ -55,17 +67,27 @@ export function renderProjectModal(projectManager, projectToEdit = null) {
   const projectInput = document.getElementById("project-name");
 
   if (projectToEdit) {
-    document.querySelector("#projectModal .title").textContent = "Edit project";
-    document.querySelector("#projectModal .subtitle").textContent =
-      "Update your project's name.";
+    const modalTitle = document.querySelector("#projectModal .title");
+    if (modalTitle) {
+      modalTitle.textContent = "Edit project";
+    }
+
+    const modalSubtitle = document.querySelector("#projectModal .subtitle");
+    if (modalSubtitle) {
+      modalSubtitle.textContent = "Update your project's name.";
+    }
+
     const submitBtn = document.querySelector("#formModalProject .btn-submit");
     if (submitBtn) {
       submitBtn.innerHTML = '<i class="hn hn-check-solid"></i> Save Changes';
     }
+
     projectInput.value = projectToEdit.title;
   }
 
-  projectInput.focus();
+  if (projectInput) {
+    projectInput.focus();
+  }
 
   const closeModal = () => modalContainer.remove();
 
@@ -74,6 +96,7 @@ export function renderProjectModal(projectManager, projectToEdit = null) {
     .getElementById("closeProjectCancel")
     .addEventListener("click", closeModal);
 
+  // Form submission handler
   document
     .getElementById("formModalProject")
     .addEventListener("submit", function (event) {
@@ -88,9 +111,11 @@ export function renderProjectModal(projectManager, projectToEdit = null) {
         projectManager.addProject(projectName);
       }
 
+      // Refresh UI components
       renderProjectTabs(projectManager);
-      if (typeof projectManager._onSelectProject === "function") {
-        projectManager._onSelectProject(projectManager.getActiveProject());
+
+      if (typeof onProjectSave === "function") {
+        onProjectSave();
       }
 
       closeModal();
