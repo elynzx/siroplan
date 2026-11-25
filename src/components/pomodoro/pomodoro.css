@@ -1,0 +1,205 @@
+.pomodoro-container {
+  width: 100%;
+  background-color: var(--color-surface);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  transition: var(--transition-fast);
+}
+
+.pomodoro-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  padding: 8px 0px;
+  border-bottom: var(--border-dashed);
+}
+
+.pomodoro-tag {
+  font-family: var(--font-main);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--color-text);
+  letter-spacing: 0.5px;
+}
+
+.pomodoro-title {
+  font-family: var(--font-title);
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--color-tertiary);
+  line-height: 1.1;
+}
+
+.timer-centerpiece {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 4px 0;
+}
+
+.pomodoro-mascot {
+  width: 96px;
+  height: 86px;
+  position: relative;
+  overflow: hidden;
+  animation: cuteFloat 2.8s ease-in-out infinite;
+}
+
+.pomodoro-mascot img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transform: scale(1.55);
+  transform-origin: center;
+}
+
+.pomodoro-mascot .frame-1 {
+  animation: catBlinkFrame1 1.4s infinite steps(1);
+}
+
+.pomodoro-mascot .frame-2 {
+  animation: catBlinkFrame2 1.4s infinite steps(1);
+}
+
+.timer-display {
+  text-align: center;
+  padding: 2px 0 4px;
+}
+
+.timer-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.timer-option {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px;
+  background-color: var(--color-bg);
+  border-radius: 10px;
+  padding: 4px;
+}
+
+.timer-option p {
+  flex: 1;
+  text-align: center;
+  font-family: var(--font-title);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--color-text);
+  padding: 5px 6px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.timer-option p:hover:not(.active) {
+  color: var(--color-tertiary);
+}
+
+.timer-option p.active {
+  background-color: var(--color-surface);
+  color: var(--color-tertiary);
+  box-shadow: var(--shadow-md);
+}
+
+.timer-option p.is-running:not(.active) {
+  color: var(--color-secondary);
+  background-color: var(--color-primary);
+}
+
+.time {
+  font-family: var(--font-title);
+  font-size: 42px;
+  font-weight: 800;
+  color: var(--color-tertiary);
+  line-height: 1;
+  letter-spacing: 1.5px;
+}
+
+.timer-status {
+  font-family: var(--font-main);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-text);
+  margin-top: 4px;
+}
+
+.timer-footer {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.timer-footer-actions {
+  width: 100%;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.btn-timer {
+  flex: 1;
+}
+
+.btn-timer:disabled,
+.btn-timer-reset:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  pointer-events: none;
+  transform: none;
+}
+
+.btn-timer-reset:hover i {
+  transform: rotate(180deg);
+}
+
+.timer-footer-log {
+  padding-top: 10px;
+  border-top: var(--border-dashed);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--font-title);
+  font-weight: 700;
+  font-size: 12px;
+}
+
+.log-label,
+.log-count {
+  color: var(--color-text);
+}
+
+.timer-log-activity {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.timer-log-activity i {
+  font-size: 15px;
+  color: var(--color-primary);
+  transition: var(--transition-bounce);
+}
+
+.timer-log-activity i.is-done {
+  color: var(--color-secondary);
+}
+
+.timer-log-activity i:hover {
+  transform: scale(1.2) rotate(10deg);
+}
