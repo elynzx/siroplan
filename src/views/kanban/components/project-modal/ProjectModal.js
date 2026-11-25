@@ -1,15 +1,16 @@
-import { renderProjectTabs } from "./ProjectTabs.js";
+import { renderProjectTabs } from "../project-tabs/ProjectTabs.js";
 
 function createProjectModalHTML() {
   return `
     <div class="modal-overlay">
-      <article class="modal-card">
+      <article class="modal-card modal-project">
         <button
           type="button"
           id="closeProject"
           class="btn btn-small modal-close-btn"
+          aria-label="Close modal"
         >
-          <i class="bx bx-x bx-sm"></i>
+          <i class="hn hn-times-solid"></i>
         </button>
         <header class="modal-header">
           <h2 class="title">Create a new project</h2>
@@ -34,8 +35,8 @@ function createProjectModalHTML() {
             >
               Cancel
             </button>
-            <button type="submit" class="btn btn-primary">
-              + Create Project
+            <button type="submit" class="btn btn-primary btn-submit">
+              <i class="hn hn-plus-solid"></i> Create Project
             </button>
           </footer>
         </form>
@@ -44,12 +45,27 @@ function createProjectModalHTML() {
   `;
 }
 
-export function renderProjectModal(projectManager) {
+export function renderProjectModal(projectManager, projectToEdit = null) {
   const modalContainer = document.createElement("div");
   modalContainer.id = "projectModal";
 
   modalContainer.innerHTML = createProjectModalHTML();
   document.body.appendChild(modalContainer);
+
+  const projectInput = document.getElementById("project-name");
+
+  if (projectToEdit) {
+    document.querySelector("#projectModal .title").textContent = "Edit project";
+    document.querySelector("#projectModal .subtitle").textContent =
+      "Update your project's name.";
+    const submitBtn = document.querySelector("#formModalProject .btn-submit");
+    if (submitBtn) {
+      submitBtn.innerHTML = '<i class="hn hn-check-solid"></i> Save Changes';
+    }
+    projectInput.value = projectToEdit.title;
+  }
+
+  projectInput.focus();
 
   const closeModal = () => modalContainer.remove();
 
@@ -63,10 +79,19 @@ export function renderProjectModal(projectManager) {
     .addEventListener("submit", function (event) {
       event.preventDefault();
 
-      const projectName = document.getElementById("project-name").value;
+      const projectName = projectInput.value.trim();
+      if (!projectName) return;
 
-      projectManager.addProject(projectName);
+      if (projectToEdit) {
+        projectManager.updateProject(projectToEdit.id, projectName);
+      } else {
+        projectManager.addProject(projectName);
+      }
+
       renderProjectTabs(projectManager);
+      if (typeof projectManager._onSelectProject === "function") {
+        projectManager._onSelectProject(projectManager.getActiveProject());
+      }
 
       closeModal();
     });

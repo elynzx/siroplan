@@ -1,0 +1,375 @@
+#taskModal {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+}
+
+.modal-task {
+  max-width: 890px;
+  height: 75vh;
+  min-height: 560px;
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-task .modal-form {
+  flex: 1;
+  justify-content: space-between;
+}
+
+.modal-task-grid {
+  display: grid;
+  grid-template-columns: 1.10fr 0.90fr;
+  gap: 38px;
+  align-items: stretch;
+  flex: 1;
+}
+
+.modal-col-main,
+.modal-col-details {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 0;
+  height: 100%;
+}
+
+.modal-col-details {
+  background-color: var(--color-primary);
+  border-radius: var(--radius-md);
+  padding: 22px 24px;
+}
+
+.details-panel-header {
+  padding-bottom: 8px;
+  border-bottom: 1px dashed rgba(62, 59, 64, 0.25);
+  margin-bottom: 14px;
+}
+
+.details-panel-tag {
+  font-family: var(--font-title);
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: var(--color-text);
+}
+
+.form-group-subtasks {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.subtask-counter-badge {
+  font-family: var(--font-main);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--color-tertiary);
+  padding: 1px 10px;
+}
+
+.checklist-input-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 6px 0 12px;
+  margin-top: 2px;
+  margin-bottom: 0;
+  border-radius: 10px;
+  background-color: var(--color-surface);
+  border: var(--border-input) !important;
+  height: 38px;
+}
+
+.checklist-input-wrapper:focus-within {
+  outline: 1.5px solid var(--color-secondary);
+}
+
+#inputSubtask {
+  border: none;
+  outline: transparent !important;
+  margin: 0;
+  padding: 6px 0;
+  height: 36px;
+  font-size: 14px;
+  background: transparent;
+}
+
+.modal-subtasks-list {
+  display: flex;
+  flex-direction: column;
+  align-content: start;
+  gap: 6px;
+  margin-top: 12px;
+  flex: 1;
+  max-height: 210px;
+  overflow-y: auto;
+  padding-right: 4px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-primary) transparent;
+}
+
+.modal-subtasks-list:empty {
+  display: none;
+  margin-top: 0;
+}
+
+.modal-subtask-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 8px;
+  border-radius: 9px;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-primary);
+  font-family: var(--font-main);
+  font-size: 14px;
+  color: var(--color-tertiary);
+  min-width: 0;
+  transition: var(--transition-fast);
+}
+
+.modal-subtask-item:not(.checked):focus-within {
+  border-color: var(--color-secondary);
+}
+
+.modal-subtask-toggle {
+  cursor: pointer;
+  padding: 0;
+}
+
+.modal-subtask-item.checked .subtask-checkbox {
+  background-color: var(--color-secondary);
+  border-color: var(--color-secondary);
+}
+
+.modal-subtask-item.checked .subtask-checkbox i {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.modal-subtask-input {
+  flex: 1;
+  border: none !important;
+  outline: none !important;
+  background: transparent !important;
+  height: 28px !important;
+  margin: 0 !important;
+  padding: 2px 4px !important;
+  font-family: var(--font-main);
+  font-size: 14px !important;
+  font-weight: 600;
+  color: var(--color-tertiary);
+  min-width: 0;
+  cursor: text;
+}
+
+.modal-subtask-item.checked .modal-subtask-input,
+.modal-subtask-input:disabled {
+  text-decoration: line-through;
+  color: var(--color-text);
+  cursor: default;
+  pointer-events: none;
+  user-select: none;
+}
+
+.modal-badge-group {
+  display: flex;
+  gap: 8px;
+  margin-top: 2px;
+}
+
+.modal-choice-badge {
+  flex: 1;
+  height: 36px;
+  padding: 0 10px;
+  border-radius: 9px;
+  border: 1.5px solid transparent;
+  background-color: var(--color-surface);
+  color: var(--color-text);
+  font-family: var(--font-title);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: var(--transition-fast);
+}
+
+.modal-choice-badge:hover:not(.active) {
+  border-color: var(--color-secondary);
+  color: var(--color-tertiary);
+  transform: translateY(-1px);
+}
+
+.priority-choice-low.active {
+  background-color: var(--tag-low);
+  color: var(--color-surface);
+  border-color: var(--color-tertiary);
+}
+
+.priority-choice-medium.active {
+  background-color: var(--tag-medium);
+  color: var(--color-surface);
+  border-color: var(--color-tertiary);
+}
+
+.priority-choice-high.active {
+  background-color: var(--tag-high);
+  color: var(--color-surface);
+  border-color: var(--color-tertiary);
+}
+
+.modal-project-dropdown {
+  position: relative;
+  width: 100%;
+  margin-top: 2px;
+}
+
+.modal-project-trigger {
+  width: 100%;
+  height: 38px;
+  padding: 0 12px;
+  border-radius: 10px;
+  border: var(--border-input);
+  background-color: var(--color-surface);
+  color: var(--color-tertiary);
+  font-family: var(--font-title);
+  font-size: 14px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.modal-project-trigger:hover:not(.is-disabled),
+.modal-project-trigger.is-open {
+  border-color: var(--color-secondary);
+}
+
+.modal-project-trigger.is-disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.modal-project-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.modal-project-trigger .dropdown-chevron {
+  font-size: 11px;
+  color: var(--color-text);
+  transition: transform 0.22s ease;
+  flex-shrink: 0;
+}
+
+.modal-project-trigger.is-open .dropdown-chevron {
+  transform: rotate(180deg);
+}
+
+.modal-project-menu {
+  position: absolute;
+  top: calc(100% + 5px);
+  left: 0;
+  width: 100%;
+  max-height: 195px;
+  overflow-y: auto;
+  background-color: var(--color-surface);
+  border: var(--border-main);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-md);
+  padding: 6px;
+  display: none;
+  flex-direction: column;
+  gap: 4px;
+  z-index: 120;
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-primary) transparent;
+}
+
+.modal-project-menu.is-open {
+  display: flex;
+}
+
+.modal-project-option {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 7px 10px;
+  border: none;
+  border-radius: 8px;
+  background-color: transparent;
+  font-family: var(--font-title);
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--color-tertiary);
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.modal-project-option:hover,
+.modal-project-option.is-active {
+  background-color: var(--color-primary);
+}
+
+.modal-option-title {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.modal-option-check {
+  font-size: 11px;
+  color: var(--color-secondary);
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+
+.modal-project-option.is-active .modal-option-check {
+  opacity: 1;
+}
+
+.modal-project-empty {
+  padding: 8px 10px;
+  font-family: var(--font-main);
+  font-size: 12px;
+  color: var(--color-text);
+  text-align: center;
+}
+
+@media (max-width: 900px) {
+  .modal-task {
+    padding: 25px 30px;
+    max-width: 100%;
+    height: auto;
+    min-height: auto;
+    max-height: 90dvh;
+    border-radius: var(--radius-md) var(--radius-md) 12px 12px;
+  }
+
+  .modal-task-grid {
+    grid-template-columns: 1fr;
+    gap: 25px;
+  }
+
+  .modal-col-details {
+    padding: 16px;
+  }
+
+  .modal-col-main {
+    gap: 18px;
+  }
+}
